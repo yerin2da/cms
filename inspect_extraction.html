@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="ko" style=" overflow-y: hidden;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS</title>
+    <!-- JS/CSS -->
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
+    <link rel="stylesheet" type="text/css" href="./css/new_standard.css" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+
+    <!-- 폰트어썸 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+<div class="wrapper inspect_extraction_wrapper">
+    <div class="layout">
+        <div id="header"></div>
+        <form name="inspect_extraction_search_form" method="get" id="inspect_extraction_search_form">
+        <div class="content-viewport">
+                <div class="content-wrap">
+                    <!--탭메뉴-->
+                    <div class="tab-menu">
+                        <a href="./inspect_extraction.html" class="tab-btn active">검수회선추출등록</a>
+                        <a href="./inspect_extraction_list.html" class="tab-btn">검수회선리스트</a>
+                    </div>
+
+                    <!-- 서치필터 -->
+                    <div class="form-group form-group-row">
+                        <select id="PAGE_ROWS" name="PAGE_ROWS" class="form-el">
+                            <option value="">개수별 보기</option>
+                            <option value="30">30개</option>
+                            <option value="50">50개</option>
+                            <option value="100">100개</option>
+                        </select>
+                        <select id="SCH_AGNC_NM" name="SCH_AGNC_NM" class="form-el">
+                            <option value="">대리점</option>
+                            <option value="대리점1">대리점1</option>
+                        </select>
+                        <select  id="SCH_EMP_NM" name="SCH_EMP_NM" class="form-el">
+                            <option value="">영업자</option>
+                            <option value="영업자1">영업자1</option>
+                        </select>
+                        <select id="SCH_GOODS_DTL" name="SCH_GOODS_DTL" class="form-el">
+                            <option value="">통신사</option>
+                            <option value="KCT">KCT</option>
+                            <option value="LG U+">LG U+</option>
+                            <option value="SK">SK</option>
+                            <option value="LG헬로">LG헬로</option>
+                        </select>
+                        <select id="SCH_GROUP_NM" name="SCH_GROUP_NM" class="form-el">
+                            <option value="">그룹명</option>
+                        </select>
+                        <select id="member_acnt" name="member_acnt" class="form-el">
+                            <option value="">고객계정</option>
+                        </select>
+                        <input type="text" id="SCH_VAL" name="SCH_VAL" class="SCH_VAL form-el">
+                        <button type="button" id="search" class="base-btn outline md">검색</button>
+                    </div><!--.form-group end-->
+
+                    <!--라인-->
+                    <div class="line"></div>
+
+                    <!-- 확장팝업, 선택개수, 저장 -->
+                    <div class="save-box">
+                        <div id="inspect-group-list-popup-open" class="base-btn icon-only md">
+                            <i id="inspect-group-list-arrow" class="fa-solid fa-angles-right inspect-group-list-arrow"></i>
+                        </div>
+                        <div class="count-wrap">
+                            <div class="text-grey">선택업체수 <span class="text-blue" id="company_count">0</span>개</div>
+                            <div class="text-grey">선택회선수 <span class="text-blue" id="line_count">0</span>개</div>
+                        </div>
+                        <button type="button" id="inspect-extraction-save-popup-open" class="base-btn primary md admin">저장</button>
+                    </div>
+
+                    <!-- 스크롤 있는 테이블일 때 .table-scrollable 추가 -->
+                    <div  class="table-wrap table-scrollable beige-theme"><!-- 그레이일 때 .gray-theme -->
+                        <table id="register_list_table" class="common-table">
+                            <colgroup>
+                                <col width="81px;">	<!-- 순번 -->
+                                <col width="50px;">	<!-- 선택 -->
+                                <col width="100px;">	<!-- 검수그룹명 -->
+                                <col width="81px;">	<!-- 대리점 -->
+                                <col width="81px;">	<!-- 영업자 -->
+                                <col width="81px;">	<!-- 통신사 -->
+                                <col width="81px;">	<!-- 고객명 -->
+                                <col width="81px;">	<!-- 상품구분 -->
+                                <col width="110px;">	<!-- 고객계정 -->
+                                <col width="110px;">	<!-- 납부계정 -->
+                                <col width="300px;">	<!-- 상호명 -->
+                                <col width="81px;">	<!-- 업종 -->
+                                <col width="119px;">	<!-- 업무종류 -->
+                                <col width="119px;">	<!-- 업무상태 -->
+                                <col width="119px;">	<!-- 개통일 -->
+                                <col width="100px;">	<!-- 회선수 -->
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>순번</span>
+                                            <span class="sort-icon" data-name="item_num"></span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div id="check-range-popup-open" class="th-wrap check-range-popup-open">
+                                            <span class="text-underline">선택</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>검수그룹명</span>
+                                            <span class="sort-icon" data-name="extraction_group_idx"></span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>대리점</span>
+                                            <span class="sort-icon" data-name="agency_type"></span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>영업자</span>
+                                            <span class="sort-icon" data-name="sale_emp_id"></span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>통신사</span>
+                                            <span class="sort-icon" data-name="product_detail"></span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>고객명</span>
+                                            <span class="sort-icon" data-name="ceo_nm"></span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>상품구분</span>
+                                            <span class="sort-icon" data-name="now_count"></span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>고객계정</span>
+                                            <span class="sort-icon" data-name="member_acnt"></span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>납부계정</span>
+                                            <span class="sort-icon" data-name="bill_acnt"></span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>상호명</span>
+                                            <span class="sort-icon" data-name="company_nm"></span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>업종</span>
+                                            <span class="sort-icon" data-name="industry"></span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>업무종류</span>
+                                            <span class="sort-icon" data-name="request_type"></span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>업무상태</span>
+                                            <span class="sort-icon" data-name="request_step"></span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>개통일</span>
+                                            <span class="sort-icon" data-name="first_open_date"></span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>회선수</span>
+                                            <span class="sort-icon" data-name="use_number_count"></span>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div><!-- //.table-viewport end -->
+
+                    <input type="hidden" id="CURR_PAGE" name="CURR_PAGE" value="">
+                    <div id="paginationContainer_main" class="paging_wrap">
+                        <div class="pagination">
+                            <ul class="paging xi-ul">
+                                <li class="xi-li"><a class="active" href="javascript:goPage(1)">1</a></li>
+                                <li class="xi-li"><a href="javascript:goPage(2)">2</a></li>
+                                <li class="xi-li"><a href="javascript:goPage(2)"><i class="xi-angle-right"></i></a></li>
+                                <li class="xi-li"><a href="javascript:goPage(2)"><i class="xi-angle-double-right"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div><!--.content-wrap end-->
+            </div><!--.content-viewport end-->
+        </form>
+    </div><!-- .layout end -->
+</div><!-- .wrapper end -->
+<script>
+
+    const register_info = [
+        {
+            "sale_emp_id": "김도윤",
+            "ceo_nm": "박서연",
+            "now_count": "1-1",
+            "company_nm": "그린하우스카페",
+            "industry": "카페",
+            "request_type": "pause",
+            "request_step": "default",
+
+        },
+        {
+            "sale_emp_id": "김도윤",
+            "ceo_nm": "정민아",
+            "now_count": "3-1",
+            "company_nm": "미르프린트",
+            "industry": "인쇄",
+            "request_type": "cancel",
+            "request_step": "todo",
+
+        },
+        {
+            "sale_emp_id": "이지후",
+            "ceo_nm": "김하늘",
+            "now_count": "2-2",
+            "company_nm": "하모니꽃집",
+            "industry": "꽃집",
+            "request_type": "change",
+            "request_step": "submitted",
+
+        },
+        {
+            "sale_emp_id": "최수현",
+            "ceo_nm": "윤지아",
+            "now_count": "3-1",
+            "company_nm": "그로우핏짐",
+            "industry": "운동",
+            "request_type": "new",
+            "request_step": "doing",
+
+        },
+        {
+            "sale_emp_id": "최수현",
+            "ceo_nm": "오채린",
+            "now_count": "1-1",
+            "company_nm": "메이플테크",
+            "industry": "IT",
+            "request_type": "etc",
+            "request_step": "done",
+
+        },
+        {
+            "sale_emp_id": "박현우",
+            "ceo_nm": "강민석",
+            "now_count": "1-1",
+            "company_nm": "도란도란키친",
+            "industry": "요식업",
+            "request_type": "pause",
+            "request_step": "done",
+
+        },
+        {
+            "sale_emp_id": "박현우",
+            "ceo_nm": "이도연",
+            "now_count": "3-2",
+            "company_nm": "클라우드에듀",
+            "industry": "교육업",
+            "request_type": "pause",
+            "request_step": "doing",
+
+        },
+        {
+            "sale_emp_id": "장우성",
+            "ceo_nm": "최나래",
+            "now_count": "4-1",
+            "company_nm": "스마트리빙랩",
+            "industry": "IT",
+            "request_type": "pause",
+            "request_step": "done",
+
+        },
+        {
+            "sale_emp_id": "한지훈",
+            "ceo_nm": "김하린",
+            "now_count": "1-1",
+            "company_nm": "에코가든",
+            "industry": "원예",
+            "request_type": "cancel",
+            "request_step": "doing",
+
+        },
+        {
+            "sale_emp_id": "송민주",
+            "ceo_nm": "박도영",
+            "now_count": "1-2",
+            "company_nm": "피치앤블루",
+            "industry": "패션",
+            "request_type": "cancel",
+            "request_step": "doing",
+
+        },
+        {
+            "sale_emp_id": "송민주",
+            "ceo_nm": "최유나",
+            "now_count": "1-3",
+            "company_nm": "모노톤사진관",
+            "industry": "영상",
+            "request_type": "cancel",
+            "request_step": "done",
+
+        },
+        {
+            "sale_emp_id": "정유빈",
+            "ceo_nm": "백지우",
+            "now_count": "1-2",
+            "company_nm": "에코클린철거",
+            "industry": "철거",
+            "request_type": "change",
+            "request_step": "todo",
+
+        },
+        {
+            "sale_emp_id": "정유빈",
+            "ceo_nm": "노태민",
+            "now_count": "1-3",
+            "company_nm": "포레스트캠프",
+            "industry": "교육업",
+            "request_type": "change",
+            "request_step": "todo",
+
+        },
+        {
+            "sale_emp_id": "김도윤",
+            "ceo_nm": "문채윤",
+            "now_count": "2-1",
+            "company_nm": "블루시네마",
+            "industry": "영상",
+            "request_type": "change",
+            "request_step": "doing",
+
+        },
+        {
+            "sale_emp_id": "김도윤",
+            "ceo_nm": "강현우",
+            "now_count": "1-2",
+            "company_nm": "루프탑브루어리",
+            "industry": "요식업",
+            "request_type": "new",
+            "request_step": "todo",
+
+        },
+        {
+            "sale_emp_id": "이지후",
+            "ceo_nm": "권도경",
+            "now_count": "1-3",
+            "company_nm": "페퍼민트스파",
+            "industry": "서비스업",
+            "request_type": "new",
+            "request_step": "todo",
+
+        },
+        {
+            "sale_emp_id": "이지후",
+            "ceo_nm": "하민석",
+            "now_count": "3-1",
+            "company_nm": "브릭앤타일",
+            "industry": "인테리어",
+            "request_type": "new",
+            "request_step": "default",
+
+        },
+        {
+            "sale_emp_id": "장우성",
+            "ceo_nm": "배지훈",
+            "now_count": "3-2",
+            "company_nm": "소담제과",
+            "industry": "제과",
+            "request_type": "etc",
+            "request_step": "todo",
+
+        },
+        {
+            "sale_emp_id": "장우성",
+            "ceo_nm": "임수아",
+            "now_count": "2-2",
+            "company_nm": "오션브리즈펜션",
+            "industry": "숙박",
+            "request_type": "etc",
+            "request_step": "default",
+
+        },
+        {
+            "sale_emp_id": "장우성",
+            "ceo_nm": "박서연",
+            "now_count": "1-1",
+            "company_nm": "별빛로스터리",
+            "industry": "카페",
+            "request_type": "etc",
+            "request_step": "done",
+
+        }
+    ]
+
+    //메인그룹리스트 생성
+    const register_list_table = $("#register_list_table tbody");
+    register_list_table.html(
+        register_info.map((item, idx) => {
+
+            let request_type_txt ="";//업무종류 텍스트
+            let request_status_txt ="";//업무상태 텍스트
+
+            switch (item.request_type) {//업무종류 텍스트
+                case "new":
+                    request_type_txt = "접수-신규";
+                    break;
+                case "cancel":
+                    request_type_txt = "해지-부분";
+                    break;
+                case "pause":
+                    request_type_txt = "일시정지요청";
+                    break;
+                case "change":
+                    request_type_txt = "변경-번호";
+                    break;
+                case "etc":
+                    request_type_txt = "콜체크";
+                    break;
+            }
+
+            switch (item.request_step) {//업무상태 텍스트
+                case "default":
+                    request_status_txt = "미진행";
+                    break;
+                case "todo":
+                    request_status_txt = "업무요청";
+                    break;
+                case "submitted":
+                    request_status_txt = "업무접수";
+                    break;
+                case "doing":
+                    request_status_txt = "업무처리중";
+                    break;
+                case "done":
+                    request_status_txt = "업무완료";
+                    break;
+            }
+
+            return `
+            <tr>
+                <td><div class="td-wrap"><span>${idx + 1}</span></div></td>
+                <td><div class="td-wrap"><input type="checkbox" name="item_check[]" class="item_check" value="${idx + 1}" data-rank="${idx + 1}"></div></td>
+                <td><div class="td-wrap"><span class="group-name">${idx + 1}</span><div class="base-btn icon-only danger sm reset-minus" data-idx="${idx + 1}"><i class="fa-solid fa-circle-minus"></i></div></td>
+                <td><div class="td-wrap"><span>대리점1</span></div></td>
+                <td><div class="td-wrap"><span>${item.sale_emp_id}</span></div></td>
+                <td><div class="td-wrap"><span>KCT</span></div></td>
+                <td><div class="td-wrap"><span>${item.ceo_nm}</span></div></td>
+                <td><div class="td-wrap"><span>${item.now_count}</span></div></td>
+                <td><div class="td-wrap"><span>404342523</span></div></td>
+                <td><div class="td-wrap"><span>404342523</span></div></td>
+                <td><div class="td-wrap company-name"><span>${item.company_nm}</span></div></td>
+                <td><div class="td-wrap"><span>${item.industry}</span></div></td>
+                <td><div class="td-wrap td-req-wrap"><div class="request-type ${item.request_type}"><span>${request_type_txt}</span></div></div></td>
+                <td><div class="td-wrap td-req-wrap"><div class="request-status ${item.request_step}"><i class="fa-solid fa-circle"></i><span>${request_status_txt}</span></div></div></td>
+                <td><div class="td-wrap"><span>2025-10-07</span></div></td>
+                <td><div class="td-wrap"><span>100</span></div></td>
+            </tr>`
+        }).join('')
+    );
+
+</script>
+
+<!--검수그룹리스트 팝업-->
+<div id="inspect-group-list-popup" class="inspect-group-list-popup overlay">
+    <div id="inspect-group-list-popup-content" class="popup-content center slide">
+        <!--제목,닫기버튼-->
+        <div class="popup-header">
+            <span class="popup-title">검수그룹리스트</span>
+            <button type="button" class="base-btn icon-only md close"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form name="inspect-group-list-popup-form">
+
+        <!-- 스크롤 없는 합계 테이블 -->
+        <div class="table-wrap beige-theme">
+            <table class="common-table tfoot-table">
+                <colgroup>
+                    <col width="128px;">	<!-- 검수그룹명 -->
+                    <col width="94px;">	    <!-- 검수요일 -->
+                    <col width="156px;">	<!-- 파일명 -->
+                    <col width="94px;">	    <!-- 타입 -->
+                    <col width="163px;">	<!-- 등록일 -->
+                    <col width="128px;">	<!-- 업체수 -->
+                    <col width="128px;">	<!-- 회선수 -->
+                    <col width="128px;">	<!-- 전체초기화 -->
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="th-wrap">
+                                <span>검수그룹명</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th-wrap">
+                                <span>검수요일</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th-wrap">
+                                <span>파일명</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th-wrap">
+                                <span>타입</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th-wrap">
+                                <span>등록일</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th-wrap">
+                                <span>업체수</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th-wrap">
+                                <span>회선수</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th-wrap">
+                                <button type="button" class="base-btn tertiary danger sm reset" data-idx="0">
+                                    <i class="fa-solid fa-rotate-right"></i>
+                                    전체초기화
+                                </button>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="inspect_group_list">
+                    <tr>
+                        <td>
+                            <div class="td-wrap">
+                                <span>1</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>월</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>KCT ~ ㅁ 업체</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>기본</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>2025-09-01 10:23</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>120</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>12,340</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <button type="button" class="base-btn tertiary danger sm reset admin" data-idx=${data.extraction_group_idx}>
+                                    <i class="fa-solid fa-rotate-right"></i>
+                                    초기화
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="td-wrap">
+                                <span>2</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>화</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>KCT ~ ㅅ 업체</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>기본</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>2025-09-01 10:23</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>120</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>12,340</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <button type="button" class="base-btn tertiary danger sm reset admin" data-idx=${data.extraction_group_idx}>
+                                    <i class="fa-solid fa-rotate-right"></i>
+                                    초기화
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="td-wrap">
+                                <span>3</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>수</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>KCT ~ ㅎ 업체</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>기본</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>2025-09-01 10:23</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>120</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>12,340</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <button type="button" class="base-btn tertiary danger sm reset admin" data-idx=${data.extraction_group_idx}>
+                                    <i class="fa-solid fa-rotate-right"></i>
+                                    초기화
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="td-wrap">
+                                <span>4</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>목</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>세종, lg헬로 업체</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>기본</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>2025-09-01 10:23</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>120</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>12,340</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <button type="button" class="base-btn tertiary danger sm reset admin" data-idx=${data.extraction_group_idx}>
+                                    <i class="fa-solid fa-rotate-right"></i>
+                                    초기화
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="td-wrap">
+                                <span>5</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>금</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>드림 업체</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>기본</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>2025-09-01 10:23</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>120</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>12,340</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <button type="button" class="base-btn tertiary danger sm reset admin" data-idx=${data.extraction_group_idx}>
+                                    <i class="fa-solid fa-rotate-right"></i>
+                                    초기화
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="td-wrap">
+                                <span>신규추가</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>수시</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>전산 요청250901</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>지정</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>2025-09-01 10:23</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>120</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>12,340</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <button type="button" class="base-btn tertiary danger sm reset admin" data-idx=${data.extraction_group_idx}>
+                                    <i class="fa-solid fa-rotate-right"></i>
+                                    초기화
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="td-wrap">
+                                <span>미지정</span>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <div class="td-wrap">
+
+                            </div>
+                        </td>
+                        <td></td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>120</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="td-wrap">
+                                <span>12,340</span>
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>
+                            <div class="td-wrap">
+                                <span>합계</span>
+                            </div>
+                        </th>
+                        <th colspan="4"></th>
+                        <th>
+                            <div class="td-wrap">
+                                <span>255</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="td-wrap">
+                                <span>24,274</span>
+                            </div>
+                        </th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div><!--table-wrap end-->
+        </form>
+        <!--그룹추가-->
+        <div id="paginationContainer_layerpop" class="paging_wrap">
+            <div class="pagination">
+                <ul class="paging xi-ul">
+                    <li class="xi-li"><a class="active" href="javascript:goPage(1)">1</a></li>
+                    <li class="xi-li"><a href="javascript:goPage(2)">2</a></li>
+                    <li class="xi-li"><a href="javascript:goPage(2)"><i class="xi-angle-right"></i></a></li>
+                    <li class="xi-li"><a href="javascript:goPage(2)"><i class="xi-angle-double-right"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <!--그룹추가-->
+        <div class="group-add-wrap">
+            <!--그룹추가 버튼-->
+            <button type="button" id="group-add-btn" class="base-btn group-add-btn md admin"><i class="fa-solid fa-circle-plus"></i>그룹 추가</button>
+
+            <!--신규추가 셀렉트-->
+            <div id="new-group-info" class="form-group form-group-row">
+                <div class="form-el group-add-title">신규추가</div>
+
+                <select id="weekday" name="weekday" class="form-el">
+                    <option value="" hidden>요일</option>
+                    <option value="월">월</option>
+                    <option value="화">화</option>
+                    <option value="수">수</option>
+                    <option value="목">목</option>
+                    <option value="금">금</option>
+                </select>
+
+                <input type="text" id="inspect_file_name" name="inspect_file_name" class="inspect_file_name form-el" autocomplete="off" placeholder="파일명">
+
+                <select id="inspect_type" name="inspect_type" class="form-el">
+                    <option value="" hidden>타입</option>
+                    <option value="수시">수시</option>
+                    <option value="지정">지정</option>
+                </select>
+
+                <div class="btn-box btn-box-row">
+                    <button type="button" id="group-add-save-btn" class="base-btn primary md">저장</button>
+                    <button type="button" id="group-add-cancel-btn" class="base-btn secondary md">취소</button>
+                </div>
+            </div><!--.form-group end-->
+        </div><!--.new-group-info end-->
+
+    </div><!--.popup-content end-->
+</div><!--#inspect-group-list-popup end-->
+
+<!--검수회선 추출등록하기 팝업-->
+<form name="inspect-extraction-save-popup-form">
+    <div id="inspect-extraction-save-popup" class="overlay">
+        <div class="popup-content center">
+            <!--제목,닫기버튼-->
+            <div class="popup-header">
+                <span class="popup-title">검수회선 추출등록하기</span>
+                <button type="button" class="base-btn icon-only md close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <!--선택개수-->
+            <div class="count-wrap">
+                <div class="text-grey">선택업체수 <span class="text-blue" id="company_count_pop">0</span>개</div>
+                <div class="text-grey">선택회선수 <span class="text-blue" id="line_count_pop">0</span>개</div>
+            </div>
+            <!-- 그룹명 셀렉트박스 -->
+            <div class="form-group">
+                <select id="inspect_group_name" name="inspect_group_name" class="form-el">
+                    <option value="" hidden>검수그룹명</option>
+                    <option value="1">그룹명 1</option>
+                    <option value="2">그룹명 2</option>
+                </select>
+            </div>
+
+            <!--노티스-->
+            <div id="extraction-save-popup_notice" class="notice-wrap red visible-hidden">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span>이미 그룹에 등록된 회선이 존재합니다.</span>
+            </div>
+            <!-- 버튼 -->
+            <div class="btn-box btn-box-row">
+                <button type="button" class="base-btn secondary md close">취소</button>
+                <button type="button" id="inspect-extraction-save-btn" class="base-btn primary md">저장</button>
+            </div>
+        </div><!--.popup-content end-->
+    </div><!--#inspect-extraction-save-popup end-->
+</form>
+
+<!--선택범위 설정 팝업-->
+<form name="check-range-popup-form">
+    <div id="check-range-popup" class="overlay">
+        <div class="popup-content">
+            <!--제목,닫기버튼-->
+            <div class="popup-header">
+                <span class="popup-title">선택범위 설정</span>
+                <button type="button" class="base-btn icon-only md close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <!--라디오버튼-->
+            <div class="form-group form-group-col">
+                <label class="form-label"><input type="radio" name="range-setting" value="all"  class="radio-btn" checked>전체선택</label>
+                <label class="form-label"><input type="radio" name="range-setting" value="range" class="radio-btn" >범위선택</label>
+                <!-- 범위 -->
+                <div class="form-group form-group-row">
+                    <input type="number" name="range-start" class="range-start form-el" placeholder="시작">~
+                    <input type="number" name="range-end" class="range-end form-el" placeholder="끝">
+                </div>
+            </div>
+            <!-- 버튼 -->
+            <div class="btn-box btn-box-row">
+                <button type="button" class="base-btn secondary md close">취소</button>
+                <button type="button" id="check-range-apply-btn" class="base-btn primary md">적용</button>
+            </div>
+        </div><!--.popup-content end-->
+    </div><!--#check-range-popup end-->
+</form>
+<script>
+    $(document).ready(function() {
+        const sort_name="<?=$sort_name?>";
+        const sort_desc="<?=$sort_desc?>";
+        // 팝업 콘텐츠 클릭시 팝업 안 닫히게
+        $(document).on("click",".overlay .popup-content",function (e){
+            console.log("팝업 콘텐츠 클릭시 팝업 안 닫히게");
+            e.stopPropagation(); // 팝업 콘텐츠 안쪽을 클릭하면 이벤트가 부모로 전달되지 않도록 막음
+        });
+
+        // 검수그룹리스트 팝업 열기
+        $(document).on("click","#inspect-group-list-popup-open",function (){
+            console.log("검수그룹리스트 팝업");
+            toggle_group_list_popup();
+        });
+
+        // 검수그룹리스트 팝업 닫기
+        $(document).on("click","#inspect-group-list-popup, #inspect-group-list-popup .close",function (){
+            toggle_group_list_popup();
+        });
+
+        //그룹추가버튼 클릭시
+        $("#new-group-info").hide();
+        $(document).on("click","#group-add-btn",function (){
+            show_group_info($(this));
+            console.log("그룹추가 클릭시");
+        });
+
+        //신규추가 취소 클릭시
+        $(document).on("click","#group-add-cancel-btn",function (){
+            console.log("신규추가 취소 클릭시");
+            hide_group_info();
+            //  toggle_group_list_popup();//창닫기
+        });
+
+        // 검수회선 추출등록 팝업 열기 - 저장 (계약건 검수그룹에 저장
+        $(document).on("click","#inspect-extraction-save-popup-open",function (){
+            console.log("검수회선 추출등록 팝업 열기");
+            toggle_extraction_save_popup();
+            // is_exist_group_by_cntrpk();
+        });
+
+        // 검수회선 추출등록 팝업 닫기
+        $(document).on("click","#inspect-extraction-save-popup, #inspect-extraction-save-popup .close",function (){//닫기
+            toggle_extraction_save_popup();
+        });
+
+        // 선택범위 설정 팝업 열기
+        $(document).on("click","#check-range-popup-open",function (){
+            // console.log("선택 팝업");
+            open_check_range_popup();
+        });
+
+        // 선택범위 설정 닫기
+        $(document).on("click","#check-range-popup, #check-range-popup .close",function (){
+            close_check_range_popup();
+        });
+
+        //회선 저장 버튼
+
+        $(document).on("click","#inspect-extraction-save-btn",function (){
+            save_extraction();
+            toggle_extraction_save_popup();//창닫기
+        });
+        //그룹추가 버튼
+        $(document).on("click","#group-add-save-btn",function (){
+            save_group();
+            toggle_group_list_popup();//창닫기
+        });
+
+        //검수그룹제거 버튼
+        $(document).on("click",".reset-minus",function (){
+            const idx  = $(this).data("idx");
+            console.log("제거 : "+idx);
+            del_group(idx);
+        });
+
+        //검색버튼
+        $(document).on("click","#search",function (){
+            //  const objPara = $("#inspect_extraction_search_form").searilize();
+            console.log("검색");
+            //console.log(objPara);
+            document.inspect_extraction_search_form.submit();
+
+        })
+        //선택박스 - 적용
+        $(document).on("click","#check-range-apply-btn",function (e){
+            console.log("선택 - 적용");
+            range_apply();
+            close_check_range_popup(); //창닫기
+            e.stopPropagation(); // 팝업 콘텐츠 안쪽을 클릭하면 이벤트가 부모로 전달되지 않도록 막음
+        });
+        $(document).on("click","input[name='range-start']",function (){
+            $('input[name="range-setting"][value="range"]').prop('checked', true); //범위설정 선택
+        });
+        $(document).on("click","input[name='range-end']",function (){
+            $('input[name="range-setting"][value="range"]').prop('checked', true); //범위설정 선택
+        });
+        $(document).on('change',".item_check", function() {
+            item_check_change();
+        });
+        $(document).on("change","#weekday",function(e){
+            let weeks = $("#weekday :checked").val();
+            change_weeks_type(weeks,"");
+            e.stopPropagation();
+        });
+
+        $(document).on("change","#inspect_type",function(e){
+            let types = $("#inspect_type :checked").val();
+            change_weeks_type("",types);
+            e.stopPropagation();
+        });
+        $(document).on("click",".reset",function(e) {
+            let idx = $(this).data("idx");
+            reset(idx);
+            e.stopPropagation();
+        });
+    });
+
+
+    function item_check_change()
+    {
+        let check_count=0;
+        let check_line_count=0;
+
+        $('.item_check:checked').each(function () {
+            check_count++;
+            // 체크된 체크박스가 속한 tr의 마지막 td span 값 읽기
+            var value = parseFloat($(this).closest('tr').find('td:last span').text());
+            if (!isNaN(value)) {
+                check_line_count += value;
+            }
+        });
+
+        $(".save-box #company_count").text(check_count);
+        $(".save-box #line_count").text(check_line_count);
+        console.log(`선택업체수 ${check_count}개 선택회선수 ${check_line_count}개`);
+    }
+    function range_check()
+    {
+        let start = $("input[name='range-start']").val();
+        let end = $("input[name='range-end']").val();
+        start = start>0 ? start : 0;
+        end = end>0 ? end : 0;
+        if(start==0  || end==0){
+            alert("범위는 0보다 큰 값이어야 합니다.");
+            return false;
+        }
+        if(start >end){
+            alert("시작 값은 종료 값보다 클 수 없습니다.");
+            return false;
+        }
+        if(end - start >= 100){
+            alert("선택할 수 있는 최대 항목 수는 100개입니다.");
+            return false;
+        }
+        return true;
+    }
+    //범위선택
+    function range_apply()
+    {
+        const range_type = $("input[name='range-setting']:checked").val();
+        console.log(`range_type : ${range_type}`);
+
+        if(range_type=="all") {//전체선택
+            console.log("전체선택");
+            $('.item_check').prop('checked', true); //체크박스 전체 선택.
+            item_check_change();
+            //창닫기
+        }else if(range_type=="range" ) {//범위선택
+            console.log("범위선택");
+            if(range_check()) { //범위값 유효성체크
+                console.log("유효성체크 완료");
+                $('.item_check').prop('checked', false); //체크박스 전체 해제.
+                const start = $("input[name='range-start']").val(); //시작값
+                const end = $("input[name='range-end']").val(); //종료값
+                $('.item_check').filter(function () { //filter 로 전체 item_check 체크후 조건에 맞는 요소만 걸러냄
+                    var rank = parseInt($(this).data('rank'), 10);
+                    return rank >= start && rank <= end;
+                }).prop('checked', true);
+            }
+            item_check_change();
+
+
+        }else{ //??
+            alert("전체선택 또는 범위선택 중 하나를 먼저 선택해 주세요.");
+        }
+    }
+
+    // 검수그룹리스트 팝업 토글
+    function toggle_group_list_popup(){
+        $('#inspect-group-list-popup').toggleClass('show');
+
+        //팝업 열렸을때
+        if ($('#inspect-group-list-popup').hasClass('show')) {
+            console.log("검수그룹리스트 팝업 토글 - open");
+            open_group_list_popup();
+        } else {
+            close_group_list_popup();
+        }
+
+        toggle_arrow_btn();
+    }
+
+    // 검수그룹리스트 팝업 열기
+    function open_group_list_popup(){
+        $('#inspect-group-list-popup-content').toggleClass('show');
+        $("#inspect-group-list-arrow").toggleClass('flip');/* 화살표 수평 반전 */
+    }
+
+    // 검수그룹리스트 팝업 닫기
+    function close_group_list_popup(){
+        $('#inspect-group-list-popup').removeClass('show');
+        $('#inspect-group-list-popup-content').removeClass('show');
+        $("#inspect-group-list-arrow").removeClass('flip');
+    }
+
+    //그룹추가버튼 클릭시
+    function show_group_info($el){
+        $el.hide();
+        $("#new-group-info").show();
+    }
+
+    //신규추가 취소 클릭시
+    function hide_group_info(){
+        $("#new-group-info").hide();
+        $("#group-add-btn").show();
+    }
+
+    // 검수회선 추출등록 팝업 토글
+    function toggle_extraction_save_popup(){
+        $('#inspect-extraction-save-popup').toggleClass('show');
+        // get_group();
+        //팝업 열렸을때
+        if ($('#inspect-extraction-save-popup').hasClass('show')) {
+            open_extraction_save_popup();
+        } else {
+            close_extraction_save_popup();
+        }
+
+        toggle_arrow_btn();
+    }
+    // 검수회선 추출등록 팝업 열기
+    function open_extraction_save_popup(){
+        $('#inspect-extraction-save-popup').addClass('show');
+    }
+
+    // 검수회선 추출등록 팝업 닫기
+    function close_extraction_save_popup(){
+        $('#inspect-extraction-save-popup').removeClass('show');
+    }
+
+    //그룹명 셀렉 가능
+    function group_name_select_available(){
+        $('#extraction-save-popup_notice').addClass('visible-hidden');
+        $('#inspect-extraction-save-btn').prop('disabled',false).removeClass('disabled');
+    }
+    //그룹명 셀렉 불가능
+    function group_name_select_Unavailable(){
+        $('#extraction-save-popup_notice').removeClass('visible-hidden');
+        $('#inspect-extraction-save-btn').prop('disabled',true).addClass('disabled');
+    }
+
+    // sort_desc 값에 따라 화살표 아이콘, 글자색 변경
+    function update_sort_icon($th, sort_desc) {
+        if (sort_desc === "up") {
+            $th.addClass("up").parents('th').css('color', '#DB655F');
+        } else if (sort_desc === "down") {
+            $th.addClass("down").parents('th').css('color', '#3D70F6');
+        }
+    }
+
+    //선택범위 설정 팝업 열기
+    function open_check_range_popup(){
+        $('#check-range-popup').toggleClass('show');
+    }
+
+    //선택범위 설정 팝업 닫기
+    function close_check_range_popup(){
+        $('#check-range-popup').removeClass('show');
+    }
+
+
+    //화살표 버튼 토글
+    function toggle_arrow_btn(){
+        // 검수그룹, 추출등록 팝업이 열려있으면
+        if ($('#inspect-group-list-popup, #inspect-extraction-save-popup').hasClass('show')) {
+            change_white_arrow();
+
+            // 검수그룹, 추출등록 팝업이 닫혀있으면
+        } else {
+            change_grey_arrow();
+        }
+    }
+
+    //흰색 화살표로 변경
+    function change_white_arrow(){
+        $("#inspect-group-list-popup-open").addClass('white-arrow');
+    }
+
+    //회색 화살표로 변경
+    function change_grey_arrow(){
+        $("#inspect-group-list-popup-open").removeClass('white-arrow');
+    }
+
+
+    // ======= 퍼블리싱을 위해 임시로 적용 =========//
+        //검수그룹명 셀렉트
+        $(document).on("click","#inspect_group_name",function (){
+            group_name_select($(this));
+        });
+        //그룹명 셀렉 가능
+        function group_name_select_available(){
+            $('#extraction-save-popup_notice').addClass('visible-hidden');
+            $('#inspect-extraction-save-btn').prop('disabled','false').removeClass('disabled');
+        }
+        //그룹명 셀렉 불가능
+        function group_name_select_Unavailable(){
+            $('#extraction-save-popup_notice').removeClass('visible-hidden');
+            $('#inspect-extraction-save-btn').prop('disabled','true').addClass('disabled');
+        }
+        //검수그룹명 셀렉트
+        function group_name_select($el){
+            if($el.val() === "2"){
+                group_name_select_Unavailable();
+            }else{
+                group_name_select_available();
+            }
+        }
+
+
+        //th 정렬
+        $(".sort-icon").on("click", function () {
+            if ($(this).hasClass("up")) { // up → down
+                $(this).removeClass("up")
+                    .addClass("down");
+                $(this).parents('th').css('color','#3D70F6');
+
+            } else if ($(this).hasClass("down")) {// down → 기본
+                $(this).removeClass("down");
+                $(this).parents('th').css('color','#4a4743');
+
+            } else {// 기본 → up
+                $(this).addClass("up");
+                $(this).parents('th').css('color','#DB655F');
+            }
+        });
+</script>
+
+<script src="include.js"></script>
+<script>
+    includeHTML("#header", "header.html");
+</script>
+</body>
+</html>

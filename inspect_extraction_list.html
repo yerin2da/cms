@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ko" style=" overflow-y: hidden;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS</title>
+    <!-- JS/CSS -->
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
+    <link rel="stylesheet" type="text/css" href="./css/new_standard.css" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+
+    <!-- 폰트어썸 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <div class="wrapper inspect_extraction_list_wrapper">
+	    <div class="layout">
+            <div id="header"></div>
+            <div class="content-viewport">
+                <div class="content-wrap">
+                    <!--탭메뉴-->
+                    <div class="tab-menu scroll_fix">
+                      <a href="./inspect_extraction.html" class="tab-btn">검수회선추출등록</a>
+                      <a href="./inspect_extraction_list.html" class="tab-btn active">검수회선리스트</a>
+                    </div>
+
+                    <!-- 스크롤 있는 테이블일 때 .table-scrollable 추가 -->
+                    <div class="table-wrap table-scrollable beige-theme"><!-- 그레이일 때 .gray-theme -->
+                        <table id="line_list_table" class="common-table">
+                            <colgroup>
+                                <col width="100px;">	<!-- 순번 -->
+                                <col width="100px;">	<!-- 검수그룹명 -->
+                                <col width="81px;">	    <!-- 요일 -->
+                                <col width="250px;">	<!-- 파일명 -->
+                                <col width="100px;">	<!-- 업체수 -->
+                                <col width="100px;">	<!-- 회선수 -->
+                                <col width="150px;">	<!-- 등록일 -->
+                                <col width="100px;">	<!-- 등록자 -->
+                                <col width="80px;">	    <!-- 다운로드 -->
+                                <col width="80px;">	    <!-- 알림넷검수요청 -->
+                                <col width="150px;">	<!-- 검수완료일 -->
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>순번</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>검수그룹명</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>요일</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>파일명</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>업체수</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>회선수</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>등록일</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>등록자</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>다운로드</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>알림넷검수<br>요청</span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="th-wrap">
+                                            <span>검수완료일</span>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <?$num=0; foreach ($rows as $row){
+                            $num = $num==0 ? $row['designation_count'] : $num;
+                                ?>
+                                <tr>
+                                    <td>
+                                        <div class="td-wrap">
+                                            <span>1</span> <!-- 순번 -->
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="td-wrap">
+                                            <span><?echo $row['extract_type'] =="B" ? $row['group_name'] : "직접지정(".$row['group_name'].")"?></span>  <!-- 검수그룹명 -->
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="td-wrap">
+                                            <span><?=$row['inspect_weekday_txt']?></span>  <!-- 요일 -->
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="td-wrap">
+                                            <span><?=$row['extract_name']?></span>  <!-- 파일명 -->
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="td-wrap">
+                                            <span><?=$row['company_count']?></span>  <!-- 업체수 -->
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="td-wrap">
+                                            <span><?=$row['line_count']?></span>  <!-- 회선수 -->
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="td-wrap">
+                                            <span><?=$row['reg_date']?></span>  <!-- 등록일 -->
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="td-wrap">
+                                            <span><?=$row['reg_emp_id']?></span>  <!-- 등록자 -->
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="td-wrap">
+                                            <div class="base-btn icon-only sm file-down-popup-open-btn" data-idx="<?=$row['extraction_group_idx']?>"><i class="fa-solid fa-ellipsis-vertical"></i></div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="td-wrap">
+                                            <div class="base-btn icon-only sm"><i class="fa-solid fa-ellipsis-vertical"></i></div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="td-wrap">
+                                            <span>2025-05-22 17:24</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?} //end foreach?>
+
+                            </tbody>
+                        </table>
+                    </div><!-- //.table-wrap end -->
+                <script>
+
+                    const line_info = [
+                        {
+                            "extract_type": "기본지정",
+                            "group_name": "1",
+                            "inspect_weekday_txt": "월",
+                            "extract_name": "KCT ㄱ ~ ㅁ 업체",
+                            "reg_emp_id": "김도윤",
+                        },
+                        {
+                            "extract_type": "기본지정",
+                            "group_name": "2",
+                            "inspect_weekday_txt": "화",
+                            "extract_name": "KCT ㅂ ~ ㅅ 업체",
+                            "reg_emp_id": "이지후",
+                        },
+                        {
+                            "extract_type": "기본지정",
+                            "group_name": "3",
+                            "inspect_weekday_txt": "수",
+                            "extract_name": "KCT ㅇ ~ ㅎ 업체",
+                            "reg_emp_id": "홍길동",
+                        },
+                        {
+                            "extract_type": "기본지정",
+                            "group_name": "4",
+                            "inspect_weekday_txt": "목",
+                            "extract_name": "LG헬로 업체",
+                            "reg_emp_id": "최수현",
+                        },
+                        {
+                            "extract_type": "기본지정",
+                            "group_name": "5",
+                            "inspect_weekday_txt": "금",
+                            "extract_name": "드림라인 업체",
+                            "reg_emp_id": "오채린",
+                        },
+                        {
+                            "extract_type": "15",
+                            "group_name": "직접지정",
+                            "inspect_weekday_txt": "수시",
+                            "extract_name": "오지호 요청 20250528",
+                            "reg_emp_id": "정유빈",
+                        },
+                        {
+                            "extract_type": "14",
+                            "group_name": "직접지정",
+                            "inspect_weekday_txt": "수시",
+                            "extract_name": "장민지 요청 20250529",
+                            "reg_emp_id": "오채린",
+                        },
+                        {
+                            "extract_type": "13",
+                            "group_name": "직접지정",
+                            "inspect_weekday_txt": "수시",
+                            "extract_name": "윤도현 요청 20250530",
+                            "reg_emp_id": "송민주",
+                        },
+                        {
+                            "extract_type": "12",
+                            "group_name": "직접지정",
+                            "inspect_weekday_txt": "수시",
+                            "extract_name": "윤도현 요청 20250530",
+                            "reg_emp_id": "송민주",
+                        },
+                        {
+                            "extract_type": "11",
+                            "group_name": "직접지정",
+                            "inspect_weekday_txt": "수시",
+                            "extract_name": "백지우 요청 20250531",
+                            "reg_emp_id": "박현우",
+                        },
+                        {
+                            "extract_type": "10",
+                            "group_name": "직접지정",
+                            "inspect_weekday_txt": "수시",
+                            "extract_name": "노태민 요청 20250601",
+                            "reg_emp_id": "박현우",
+                        },
+                        {
+                            "extract_type": "9",
+                            "group_name": "직접지정",
+                            "inspect_weekday_txt": "수시",
+                            "extract_name": "송가온 요청 20250602",
+                            "reg_emp_id": "강민석",
+                        },
+                        {
+                            "extract_type": "8",
+                            "group_name": "직접지정",
+                            "inspect_weekday_txt": "수시",
+                            "extract_name": "문채윤 요청 20250603",
+                            "reg_emp_id": "강민석",
+                        },
+                        {
+                            "extract_type": "7",
+                            "group_name": "직접지정",
+                            "inspect_weekday_txt": "수시",
+                            "extract_name": "강현우 요청 20250604",
+                            "reg_emp_id": "강민석",
+                        },
+                        {
+                            "extract_type": "6",
+                            "group_name": "직접지정",
+                            "inspect_weekday_txt": "수시",
+                            "extract_name": "임수아 요청 20250605",
+                            "reg_emp_id": "강민석",
+                        },
+                        {
+                            "extract_type": "5",
+                            "group_name": "직접지정",
+                            "inspect_weekday_txt": "수시",
+                            "extract_name": "권도경 요청 20250606",
+                            "reg_emp_id": "장우성",
+                        },
+                        {
+                            "extract_type": "4",
+                            "group_name": "직접지정",
+                            "inspect_weekday_txt": "수시",
+                            "extract_name": "신예린 요청 20250607",
+                            "reg_emp_id": "장우성",
+                        },
+                        {
+                            "extract_type": "3",
+                            "group_name": "직접지정",
+                            "inspect_weekday_txt": "수시",
+                            "extract_name": "김하린 요청 20250522",
+                            "reg_emp_id": "홍길동",
+                        },
+                        {
+                            "extract_type": "2",
+                            "group_name": "직접지정",
+                            "inspect_weekday_txt": "수시",
+                            "extract_name": "하민석 요청 20250608",
+                            "reg_emp_id": "최수현",
+                        },
+                        {
+                            "extract_type": "1",
+                            "group_name": "직접지정",
+                            "inspect_weekday_txt": "수시",
+                            "extract_name": "조하늘 요청 20250609",
+                            "reg_emp_id": "최수현",
+                        }
+
+                    ]
+
+                    //메인그룹리스트 생성
+                    const line_list_table = $("#line_list_table tbody");
+                    line_list_table.html(
+                        line_info.map((item, idx) => {
+
+                            return `
+                                <tr>
+                                    <td>
+                                        <div class="td-wrap">
+                                            <span>${item.extract_type}</span> <!-- 순번 -->
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="td-wrap">
+                                            <span>${item.group_name}</span>  <!-- 검수그룹명 -->
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="td-wrap">
+                                            <span>${item.inspect_weekday_txt}</span>  <!-- 요일 -->
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="td-wrap">
+                                            <span>${item.extract_name}</span>  <!-- 파일명 -->
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="td-wrap">
+                                            <span>1,000</span>  <!-- 업체수 -->
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="td-wrap">
+                                            <span>5,000</span>  <!-- 회선수 -->
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="td-wrap">
+                                            <span>2025-05-29 08:15</span>  <!-- 등록일 -->
+                                        </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="td-wrap">
+                                            <span>${item.reg_emp_id}</span>  <!-- 등록자 -->
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="td-wrap">
+                                            <div class="base-btn icon-only sm file-down-popup-open-btn" data-idx="<?=$row['extraction_group_idx']?>"><i class="fa-solid fa-ellipsis-vertical"></i></div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="td-wrap">
+                                            <div class="base-btn icon-only sm"><i class="fa-solid fa-ellipsis-vertical"></i></div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="td-wrap">
+                                            <span>2025-05-22 17:24</span>
+                                        </div>
+                                    </td>
+                                </tr>`
+                        }).join('')
+                    );
+
+                </script>
+
+                </div><!--.content-wrap end-->
+            </div><!--.content-viewport end-->
+        </div><!-- .layout end -->
+    </div><!-- .wrapper end -->
+
+    <!--파일다운로드 팝업-->
+    <div id="file-down-popup" class="overlay">
+        <div id="file-down-popup-content" class="popup-content center">
+            <!--제목,닫기버튼-->
+            <div class="popup-header">
+                <span class="popup-title">파일 다운로드</span>
+                <button type="button" class="base-btn icon-only md close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <!--노티스-->
+            <div class="notice-wrap yellow">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>생성된 파일은 2주 후 자동 삭제됩니다.</span>
+            </div>
+            <!-- 스크롤 있는 테이블일 때 .table-scrollable 추가 -->
+            <div class="table-wrap beige-theme"><!-- 그레이일 때 .gray-theme -->
+                <table class="common-table">
+                  <colgroup>
+                      <col width="163px;">	<!-- 파일명 -->
+                      <col width="163px;">	<!-- 생성일 -->
+                      <col width="163px;">	<!-- 다운로드 -->
+                  </colgroup>
+                  <thead>
+                      <tr>
+                          <th>
+                              <div class="th-wrap">
+                                  <span>파일명</span>
+                              </div>
+                          </th>
+                          <th>
+                              <div class="th-wrap">
+                                  <span>생성일</span>
+                              </div>
+                          </th>
+                          <th>
+                              <div class="th-wrap">
+                                  <span>다운로드</span>
+                              </div>
+                          </th>
+                      </tr>
+                  </thead>
+                  <tbody id="file-down-popup_body">
+                      <tr>
+                          <td>
+                              <div class="td-wrap">
+                                  <span>20250909.xlsx</span>
+                              </div>
+                          </td>
+                          <td>
+                              <div class="td-wrap">
+                                  <span>2025-09-09 10:23</span>
+                              </div>
+                          </td>
+                          <td>
+                              <div class="td-wrap">
+                                <button type="button" class="base-btn success sm">
+                                    <i class="fa-solid fa-file-excel"></i>엑셀 다운로드
+                                </button>
+                              </div>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>
+                              <div class="td-wrap">
+                                  <span>20250916.xlsx</span>
+                              </div>
+                          </td>
+                          <td>
+                              <div class="td-wrap">
+                                  <span>2025-09-16 10:23</span>
+                              </div>
+                          </td>
+                          <td>
+                              <div class="td-wrap">
+                                  <button type="button" class="base-btn success sm" data-idx="${data.inspect_extraction_file_idx}">
+                                      <i class="fa-solid fa-file-excel"></i>엑셀 다운로드
+                                  </button>
+                              </div>
+                          </td>
+                      </tr>
+                  </tbody>
+                </table>
+            </div><!--table-wrap-->
+
+            <div class="btn-box">
+              <button type="button" class="base-btn secondary md close">취소</button>
+            </div>
+        </div><!--.popup-content end-->
+    </div><!--.file-down-popup end-->
+    <iframe src="" name="file_frame" id="file_frame" style="/*display: none;*/"></iframe>
+    <script>
+        $(document).ready(function() {
+
+            // 팝업 콘텐츠 클릭시 팝업 안 닫히게
+            $(document).on("click",".overlay .popup-content",function (e){
+                e.stopPropagation(); // 팝업 콘텐츠 안쪽을 클릭하면 이벤트가 부모로 전달되지 않도록 막음
+            });
+
+            // 파일 다운로드 팝업 열기
+            $(document).on("click",".file-down-popup-open-btn",function (){
+                const idx = $(this).data("idx");
+                open_file_down_popup(idx);
+            });
+
+            // 파일 다운로드 팝업 닫기
+            $(document).on("click","#file-down-popup, #file-down-popup .close",function (){
+                close_file_down_popup();
+            });
+        })
+
+        function open_file_down_popup(idx){
+            $('#file-down-popup').toggleClass('show');
+        }
+
+        function close_file_down_popup(){
+            $('#file-down-popup').removeClass('show');
+        }
+    </script>
+    <script src="include.js"></script>
+    <script>
+        includeHTML("#header", "header.html");
+    </script>
+</body>
+</html>
