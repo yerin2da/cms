@@ -311,7 +311,7 @@ select.form-el{/*셀렉트 화살표 이미지*/
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background-image: url("/img/select-down.svg");
+  background-image: url("../img/select-down.svg");
   background-size: 20px;
   background-repeat: no-repeat;
   background-position: right 5px center;
