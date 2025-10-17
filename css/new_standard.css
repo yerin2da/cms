@@ -447,16 +447,16 @@ select.form-el option{
 .common-table th .sort-icon{
   height: 14px;
   padding: 10px;
-  background-image: url('/img/sort.svg');
+  background-image: url('../img/sort.svg');
   background-repeat: no-repeat;
   background-position: center;
   cursor: pointer;
 }
 .common-table th .sort-icon.up{
-  background-image: url('/img/sort-up.svg');
+  background-image: url('../img/sort-up.svg');
 }
 .common-table th .sort-icon.down{
-  background-image: url('/img/sort-down.svg');
+  background-image: url('../img/sort-down.svg');
 }
 
 .common-table tbody tr td {
