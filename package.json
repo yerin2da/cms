@@ -1,0 +1,16 @@
+{
+  "name": "my_cms",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000m\u0000y\u0000_\u0000c\u0000m\u0000s\u0000\r\u0000 \u0000",
+  "main": "include.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tailwind:init": "tailwindcss init"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^4.1.14"
+  }
+}

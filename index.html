@@ -16,9 +16,9 @@
 <body>
 <div class="wrapper inspect_extraction_wrapper">
     <div class="layout">
-        <div id="header"></div>
+        <div id="header_include"></div>
         <form name="inspect_extraction_search_form" method="get" id="inspect_extraction_search_form">
-        <div class="content-viewport">
+            <div class="content-viewport">
                 <div class="content-wrap">
                     <!--탭메뉴-->
                     <div class="tab-menu">
@@ -1321,29 +1321,11 @@
                 group_name_select_available();
             }
         }
-
-
-        //th 정렬
-        $(".sort-icon").on("click", function () {
-            if ($(this).hasClass("up")) { // up → down
-                $(this).removeClass("up")
-                    .addClass("down");
-                $(this).parents('th').css('color','#3D70F6');
-
-            } else if ($(this).hasClass("down")) {// down → 기본
-                $(this).removeClass("down");
-                $(this).parents('th').css('color','#4a4743');
-
-            } else {// 기본 → up
-                $(this).addClass("up");
-                $(this).parents('th').css('color','#DB655F');
-            }
-        });
 </script>
 
 <script src="include.js"></script>
 <script>
-    includeHTML("#header", "header.html");
+    includeHTML("#header_include", "/my_cms/header.html");
 </script>
 </body>
 </html>

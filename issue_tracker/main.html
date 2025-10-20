@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko" style="overflow-y: hidden;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS</title>
+    <!-- JS/CSS -->
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/new_standard.css" />
+    <link rel="stylesheet" href="./main.css" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- 폰트어썸 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- 칸반보드js-->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+    <!--테일윈드-->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!--animate.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+</head>
+
+<body>
+<div class="wrapper">
+    <div class="layout">
+        <div id="header_include"></div>
+
+        <div class="content-viewport">
+            <div class="content-wrap">
+                <!-- 보드형 -->
+                <div class="view-board p-4 h-full flex justify-around gap-8">
+                        <div class="kanban-board" data-id="_default">
+                            <div class="kanban-board-header justify-between">미할당
+                                <button id="addIssueBtn" class="addIssueBtn py-2 px-4 bg-black font-normal text-white rounded text-base">이슈등록</button>
+                            </div>
+
+                            <div id="default" data-status="U" class="kanban-drag">
+                                <div class="group kanban-item add-item cursor-pointer bg-white rounded-xl p-4 transition ${animateClass}" data-id="${card.issue_idx}">
+                                    <p class="text-[15px] font-normal text-gray-500 mb-1">No.3</p>
+                                    <p class="font-semibold text-lg text-gray-700 mb-4 truncate">제목을 입력하세요</p>
+                                    <div class="flex justify-between items-center">
+                                        <p class="text-sm font-normal text-gray-400">2025-10-06</p>
+                                        <div class="reg_emp_name rounded-full flex items-center justify-center bg-[#fbfbfb] border border-[#e9e9e9]">
+                                            <p class="text-sm font-semibold" style="">케빈</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="group kanban-item add-item cursor-pointer bg-white rounded-xl p-4 transition ${animateClass}" data-id="${card.issue_idx}">
+                                    <p class="text-[15px] font-normal text-gray-500 mb-1">No.3</p>
+                                    <p class="font-semibold text-lg text-gray-700 mb-4 truncate">제목을 입력하세요</p>
+                                    <div class="flex justify-between items-center">
+                                        <p class="text-sm font-normal text-gray-400">2025-10-06</p>
+                                        <div class="reg_emp_name rounded-full flex items-center justify-center bg-[#fbfbfb] border border-[#e9e9e9]">
+                                            <p class="text-sm font-semibold" style="">케빈</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kanban-board" data-id="_todo">
+                            <div class="kanban-board-header">대기</div>
+                            <div id="todo" data-status="W" class="kanban-drag">
+                                <div class="group kanban-item add-item cursor-pointer bg-white rounded-xl p-4 transition ${animateClass}" data-id="${card.issue_idx}">
+                                    <p class="text-[15px] font-normal text-gray-500 mb-1">No.2</p>
+                                    <p class="font-semibold text-lg text-gray-700 mb-4 truncate">검수회선 업무요청</p>
+                                    <div class="flex justify-between items-center">
+                                        <p class="text-sm font-normal text-gray-400">2025-10-04</p>
+                                        <div class="reg_emp_name rounded-full flex items-center justify-center bg-[#fbfbfb] border border-[#e9e9e9]">
+                                            <p class="text-sm font-semibold" style="">지수</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kanban-board" data-id="_doing">
+                            <div class="kanban-board-header">진행중</div>
+                            <div id="doing" data-status="P" class="kanban-drag">
+                                <div class="group kanban-item add-item cursor-pointer bg-white rounded-xl p-4 transition ${animateClass}" data-id="${card.issue_idx}">
+                                    <p class="text-[15px] font-normal text-gray-500 mb-1">No.1</p>
+                                    <p class="font-semibold text-lg text-gray-700 mb-4 truncate">검수회선통계 글자색 변경요청합니다</p>
+                                    <div class="flex justify-between items-center">
+                                        <p class="text-sm font-normal text-gray-400">2025-10-01</p>
+                                        <div class="reg_emp_name rounded-full flex items-center justify-center bg-[#fbfbfb] border border-[#e9e9e9]">
+                                            <p class="text-sm font-semibold" style="">유나</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kanban-board" data-id="_done">
+                            <div class="kanban-board-header">완료</div>
+                            <div id="done" data-status="C" class="kanban-drag"></div>
+                        </div>
+
+                        <div class="kanban-board" data-id="_reject">
+                            <div class="kanban-board-header">반려</div>
+                            <div id="reject" data-status="H" class="kanban-drag"></div>
+                        </div>
+                </div><!--view-board end-->
+
+            </div><!--content-wrap end-->
+        </div><!--content-viewport end-->
+    </div><!--layout end-->
+</div><!--wrapper end-->
+    <script src="../include.js"></script>
+
+    <script src="./Issue.js"></script>
+
+    <script>
+        includeHTML("#header_include", "/my_cms/header.html");
+//1. 리스트 전체 데이터 호출
+    //issue.setHost("<?=$host?>");
+    //issue.setToken("<?=$token?>");
+    const  issue = new Issue();
+
+    let issue_idx = 1;
+
+    // issue.list('all'); //전체리스트
+
+    // 보드형 선택
+        $("#btnradio1").on('click', function () {
+            $(".view-board").show();
+            $(".view-list").hide();
+        });
+
+    // 리스트형 선택
+        $("#btnradio2").on('click', function () {
+            $(".view-board").hide();
+            $(".view-list").show();
+        });
+
+    // 갱신리스트
+    // setInterval(() => {
+    //     issue.list('update');
+    //     console.log("이슈 자동 갱신");
+    // }, 10000); //10초
+    //전체리스트  - 1분마다 새롭게 불러온다.
+    // setInterval(() => {
+    //     $("div.kanban-item").remove();
+    //     // issue.list('all');
+    //     console.log("전체 갱신");
+    // }, 60000); //1분
+$(document).on('dblclick', '.add-item', function () {
+    issue_idx = $(this).data('id');
+
+    popup("detail_popup", "이슈 상세",  issue_idx);
+
+});
+    // 상세 팝업
+        function popup(pageName, pageTitle, idx) {
+            const popupWidth = 1040; // 팝업 너비
+            const popupHeight = 1200; // 팝업 높이
+
+            // 화면 크기 기준으로 중앙
+            const left = (window.innerWidth / 2) - (popupWidth / 2) + window.screenX;
+            const top = (window.innerHeight / 2) - (popupHeight / 2) + window.screenY;
+            window.open(`./${pageName}.html?issue_idx=`+ idx , pageTitle, `
+            width=${popupWidth},height=${popupHeight},left=${left},top=${top},resizable=yes`);
+        }
+
+//칸반보드 구현
+    ['todo', 'doing', 'done', 'reject', 'default'].forEach(function (id) {
+        new Sortable(document.getElementById(id), {
+            group: 'kanban',
+            animation: 150,
+            filter: '.no-drag',
+            onStart: function (evt) {
+//                 console.log('드래그 시작:', evt.item);
+
+            },
+            onEnd: function (evt) {
+//                 console.log('드래그 종료:', evt.item);
+                 const issue_idx = evt.item.getAttribute('data-id'); // 조회할 이슈코드
+                 const status = evt.to.getAttribute('data-status');// 변경할 상태값
+//                     console.log(status)
+//                 issue.change(issue_idx, status); //상태 변경
+            },
+            onAdd: function (evt) {
+//                 console.log('다른 컬럼에서 추가됨:', evt.item);
+//                 console.log('추가된 위치:', evt.newIndex);
+            },
+            onRemove: function (evt) {
+//                 console.log('이 컬럼에서 제거됨:', evt.item);
+            },
+            onUpdate: function (evt) {
+//                 console.log('순서 변경됨:', evt.item);
+            },
+            onMove: function (evt) {
+                const dragged = evt.dragged;
+                const related = evt.related;
+
+                // 드래그 중인 항목이 no-drag면 드래그앤드랍 불가
+                if (dragged.classList.contains('no-drag')) return false;
+
+                return true;
+            }
+        });
+    });
+
+
+
+
+
+
+    $('#addIssueBtn').on('click', function () {
+        issue.add() //이슈추가
+    });
+
+     </script>
+
+
+</body>
+</html>

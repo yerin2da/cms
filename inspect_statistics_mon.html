@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko" style=" overflow-y: hidden;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS</title>
+    <!-- JS/CSS -->
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
+    <link rel="stylesheet" type="text/css" href="./css/new_standard.css" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+
+    <!-- 폰트어썸 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!--달력-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker/dist/locales/bootstrap-datepicker.kr.min.js"></script>
+
+    <!-- 부트스트랩 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="wrapper">
+    <div class="layout">
+        <div id="header_include"></div>
+        <div class="content-viewport">
+            <div class="content-wrap">
+                <!--탭메뉴-->
+                <div class="tab-menu">
+                    <a href="./inspect_statistics_day.html" class="tab-btn">검수회선통계 일별</a>
+                    <a href="./inspect_statistics_mon.html" class="tab-btn active">검수회선통계 월별</a>
+                </div>
+
+                <!-- 서치필터 -->
+                <div class="form-group form-group-row">
+                    <!--개수별보기-->
+                    <select id="PAGE_ROWS" name="PAGE_ROWS" class="form-el">
+                        <option value="">개수별 보기</option>
+                        <option value="30">30개 출력</option>
+                        <option value="50">50개 출력</option>
+                        <option value="100">100개 출력</option>
+                    </select>
+
+                    <!--달력-->
+                    <input type="text" id="VAL_ST_DATE" name="VAL_ST_DATE" value="" class="form-el calender apply_date_Y" placeholder="날짜를 선택하세요" autocomplete="off">
+
+                    <!--검색버튼-->
+                    <button type="button" id="search" class="base-btn outline md">검색</button>
+                </div><!--.form-group end-->
+
+                <!--라인-->
+                <div class="line"></div>
+
+                <!-- 스크롤 있는 테이블일 때 .table-scrollable 추가 -->
+                <div class="table-wrap table-scrollable beige-theme"><!-- 그레이일 때 .gray-theme -->
+                    <table id="statistics-table" class="common-table statistics-table">
+                        <colgroup>
+                            <col width="80px;">	<!-- 순번 -->
+                            <col width="120px"><!-- 등록일 -->
+                            <col width="120px"><!-- 정상회선 -->
+                            <col width="120px"><!-- 비정상회선 -->
+                            <col width="120px"><!-- 비노출 -->
+                            <col width="120px"><!-- 번호틀림 -->
+                            <col width="120px"><!-- 상호틀림 -->
+                            <col width="120px"><!-- 다수검색 -->
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>
+                                <div class="th-wrap">
+                                    <span>순번</span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th-wrap">
+                                    <span>등록일</span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th-wrap">
+                                    <span>정상회선</span>
+                                    <span class="sort-icon" data-name="good_line"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th-wrap">
+                                    <span>비정상회선</span>
+                                    <span class="sort-icon" data-name="wrong_line"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th-wrap">
+                                    <span>검색없음</span>
+                                    <span class="sort-icon" data-name="notfound"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th-wrap">
+                                    <span>번호틀림</span>
+                                    <span class="sort-icon" data-name="number_wrong"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th-wrap">
+                                    <span>상호틀림</span>
+                                    <span class="sort-icon" data-name="campany_name_wrong"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th-wrap">
+                                    <span>다수검색</span>
+                                    <span class="sort-icon" data-name="muulti_search"></span>
+                                </div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div><!-- //.table-wrap end -->
+
+                <!--페이징-->
+                <input type="hidden" id="CURR_PAGE" name="CURR_PAGE" value="">
+                <div id="paginationContainer_main" class="paging_wrap">
+                    <div class="pagination">
+                        <ul class="paging xi-ul">
+                            <li class="xi-li"><a class="active" href="javascript:goPage(1)">1</a></li>
+                            <li class="xi-li"><a href="javascript:goPage(2)">2</a></li>
+                            <li class="xi-li"><a href="javascript:goPage(2)"><i class="xi-angle-right"></i></a></li>
+                            <li class="xi-li"><a href="javascript:goPage(2)"><i class="xi-angle-double-right"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div><!--content-wrap end-->
+        </div><!--content-viewport end-->
+    </div><!--layout end-->
+</div><!--wrapper end-->
+
+
+<script src="include.js"></script>
+<script>
+    includeHTML("#header_include", "/my_cms/header.html");
+
+    $(document).ready(function () {
+        //테이블 리스트 생성
+        const list_info = Array.from({length:12}, (_, i) => i + 1);//Array.from('ABC'); ['A', 'B', 'C'] // 리턴값:i + 1각 요소의 값으로 들어감
+        //메인그룹리스트 생성
+        const list_table = $("#statistics-table tbody");
+        list_table.html(
+            list_info.map((_, idx) => {
+
+                return `
+                <tr>
+                    <td><div class="td-wrap"><span>${idx + 1}</span></div></td><!-- 순번 -->
+                    <td><div class="td-wrap"><span>2025-10-${String(idx + 1).padStart(2,'0')}</span></div></td><!-- 등록일 -->
+                    <td>
+                        <div class="td-wrap td-wrap-col text-right statistics-good"><!-- 80~100%일 때 컬러 #FF4C4C-->
+                            <p class="statistics-num">100</p>
+                            <p>( 35% )</p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="td-wrap td-wrap-col text-right statistics-critical"><!--60~79%일 때 컬러 #f37232-->
+                            <p class="statistics-num">100</p>
+                            <p>( 60% )</p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="td-wrap td-wrap-col text-right statistics-danger"><!--40~59%일 때 컬러 #ffaa00-->
+                            <p class="statistics-num">100</p>
+                            <p>( 40% )</p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="td-wrap td-wrap-col text-right statistics-warning"><!--20~39%일 때 컬러 #d8ae5a-->
+                            <p class="statistics-num">100</p>
+                            <p>( 20% )</p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="td-wrap td-wrap-col text-right statistics-caution"><!--0~19%일 때 컬러 #9aa76c-->
+                            <p class="statistics-num">10</p>
+                            <p>( 1% )</p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="td-wrap td-wrap-col text-right statistics-safe"><!--0~19%일 때 컬러 #9aa76c-->
+                            <p class="statistics-num">100</p>
+                            <p>( 0% )</p>
+                        </div>
+                    </td>
+                    </tr>
+                `
+            }).join('')
+        );
+    });
+</script>
+
+
+</body>
+</html>

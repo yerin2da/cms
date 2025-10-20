@@ -58,6 +58,7 @@ table { font-family:'Pretendard', 'Noto Sans KR', 'Nanum Gothic', 'Malgun Gothic
 .header .menu { width:100%; height:40px; line-height:40px; padding:0 20px; background:linear-gradient(to top, #244689 0%, #3462bb 100%); box-shadow:0 2px 2px rgba(30,30,30,0.1); }
 .header .menu .navi { width:100%; height:100%; }
 .header .menu .navi > li { display:inline-block; height:100%; position:relative; }
+.header .menu .navi > li:hover ul.gnb_2dul{ display:inline-block;}
 .header .menu .navi > li:after { content:'/'; padding:0 15px; color:#fff; }
 .header .menu .navi li a { font-size:15px; font-weight:500; color:#fff; text-decoration:none; letter-spacing:-0.05em; }
 .header .menu .navi li:last-of-type:after { display:none; }
@@ -76,3 +77,58 @@ table { font-family:'Pretendard', 'Noto Sans KR', 'Nanum Gothic', 'Malgun Gothic
 .paging_wrap .paging li a { display:flex; justify-content:center; align-items:center; width:100%; height:100%; padding:2px 4px; font-size:12px; font-weight:600; color:#999; border-radius:30px; letter-spacing:-0.05em; }
 .paging_wrap .paging li a:hover { background:#f3f3f3; color:#555; }
 .paging_wrap .paging li a.active { background:#4379d8; color:#fff; }
+
+/*년, 월 달력*/
+.datepicker-dropdown:after {
+	display: none !important;
+}
+.datepicker-dropdown:before {
+	display: none !important;
+}
+.datepicker-dropdown {
+	border: 2px solid #cde0ff !important;
+	border-radius: 15px !important;
+	padding: 5px 10px !important;
+	z-index: 12 !important;
+}
+.datepicker-dropdown .datepicker-switch {
+	font-size: 16px;
+	margin: 1px 15px;
+	border: none;
+	color: #8ab6ff;
+	font-weight: 600;
+	padding: 10px;
+}
+.datepicker-dropdown table tr td span{
+	width: 40px !important;
+	height: 40px !important;
+	line-height: 37px !important;
+	color:#333 !important;
+	border: 2px solid transparent !important;
+	font-weight: 400!important;
+	font-size: 14px !important;
+	margin: 5px !important;
+}
+.datepicker-dropdown table tr td span.active.active{
+	width: 40px;
+	height: 40px;
+	line-height: 40px;
+	border-radius: 50%;
+	color:#333 !important;
+	border: 2px solid #9cc1ff !important;
+	background-image: none !important;
+	background-color: #fff!important;
+	font-weight: 400!important;
+	font-size: 14px !important;
+}
+.datepicker-dropdown table tr td span.focused, .datepicker table tr td span:hover {
+	border-radius: 50%;
+	background-color: #eaf2ff !important;
+	color: #535353 !important;
+}
+.datepicker.datepicker-dropdown td, .datepicker.datepicker-dropdown th {
+	width: 70px !important;
+}
+.apply_date_Ym {
+	cursor:pointer;
+}
