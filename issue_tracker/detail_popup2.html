@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS</title>
+    <!-- JS/CSS -->
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/new_standard.css" />
+    <link rel="stylesheet" href="./main.css" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+    <!--select2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- 폰트어썸 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- 칸반보드js-->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+    <!--테일윈드-->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!--animate.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+</head>
+
+<body>
+<div class="wrapper">
+    <div class="layout popup-layout">
+        <div id="header_include"></div>
+
+        <div class="content-viewport">
+            <div class="content-wrap">
+                <div class="sub_tit_area">
+                    <h1 class="flex items-center text-base font-bold space-x-2">
+                    <span class="relative text-gray-800 pr-4 after:content-[''] after:absolute after:top-1/2 after:translate-y-[-50%] after:right-1 after:h-4 after:border-r after:border-gray-300">
+                      이슈 상세
+                    </span>
+                        <span class="text-[#3d7aff]">No.<span class="issue_idx">02</span></span>
+                    </h1>
+                </div>
+
+                <form name="request_form">
+                    <input type="hidden" id="issue_idx" name="issue_idx" value="" /><!--코드-->
+                    <input type="hidden" id="reg_datetime" name="reg_datetime" value="" /><!--등록일시-->
+                    <input type="hidden" id="reg_date" name="reg_date" value="" /><!--등록일(년월일)-->
+
+                    <table class="w-full section_table file_section_table file_table" border="0" cellspacing="0" cellpadding="0">
+                        <tbody class="divide-y divide-gray-200 text-sm text-gray-500">
+                        <!-- 등록자 -->
+                        <tr class="bg-gray-50">
+                            <th class="text-left font-medium text-gray-500 py-3 px-4 w-32 bg-gray-100">등록자</th>
+                            <td colspan="3" class="p-2">
+                                <p id="reg_emp_id" class="text-gray-600 font-medium ">케빈오</p>
+                            </td>
+                        </tr>
+
+                        <!-- 담당자 -->
+                        <tr>
+                            <th class="text-left font-medium text-gray-500 py-3 px-4 bg-gray-100">담당자</th>
+                            <td colspan="3" class="p-2">
+                                <select class="manager_id w-full text-gray-600 font-medium border border-gray-300 rounded-md" name="manager_id[]" multiple>
+                                    <option value="담당1">담당1</option>
+                                    <option value="담당2">담당2</option>
+                                    <option value="담당3">담당3</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <!-- 진행상태 -->
+                        <tr class="bg-gray-50">
+                            <th class="text-left !font-medium text-gray-500 py-3 px-4 bg-gray-100">진행상태</th>
+                            <td colspan="3" class="p-2">
+                                <div class="request-status-box default">
+                                    대기
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- 제목 -->
+                        <tr>
+                            <th class="text-left font-medium text-gray-500 py-3 px-4 bg-gray-100">제목</th>
+                            <td colspan="3" class="p-2">
+                                <input name="title" id="title" class="w-full text-gray-600 font-medium border border-gray-300 rounded-md px-3 py-2 focus:outline-none" placeholder="제목을 입력하세요" value=""/>
+
+                            </td>
+                        </tr>
+
+                        <!-- 첨부파일 -->
+                        <tr class="bg-gray-50 h-[65px]">
+                            <th class="text-left font-medium text-gray-500 py-3 px-4 bg-gray-100 align-top" style="line-height: 32px;">첨부파일</th>
+                            <td colspan="3" class="p-2">
+                                <ul class="files_wrap flex flex-wrap gap-2 items-center">
+
+                                </ul>
+                            </td>
+                        </tr>
+
+                        <!-- 내용 -->
+                        <tr>
+                            <th class="text-left font-medium text-gray-500 py-3 px-4 bg-gray-100 align-top">내용</th>
+                            <td colspan="3" class="p-2">
+                                <div id="editor" class="border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-400" style="height: 300px;"></div>
+                            </td>
+                        </tr>
+
+                        <!-- 파일 드롭 -->
+                        <tr class="bg-[#f2f8ff] fileDrop_wrap transition">
+                            <td colspan="4" class="py-6 px-4 text-center border-t border-blue-200">
+                                <div class="fileDrop border-2 border-dashed border-transparent rounded-md py-6 text-[#4d91ff]">
+                                    <i class="bi bi-file-earmark-arrow-up text-2xl"></i>
+                                    <p class="mt-2">첨부할 파일을 여기에 끌어다 놓으세요</p>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                    <div class="flex justify-end gap-2 py-4">
+                        <button id="save_btn" type="button" class="bg-black rounded font-normal text-white py-2 px-4 text-base">저장하기</button>
+                        <button type="button" class="bg-white rounded font-normal border border-gray-300 text-gray-400 py-2 px-4 text-base" onClick="self.close()">취소하기</button>
+                    </div>
+                    <!-- 댓글 -->
+                    <div class="my-2 p-2 bg-gray-100 rounded-md">
+
+                        <!-- 댓글 등록 -->
+                        <div class="flex flex-col items-end gap-2">
+                            <textarea id="comment" placeholder="댓글을 입력하세요" class="w-full rounded-md border border-gray-300 min-h-28 max-h-80 overflow-y-auto p-2"></textarea>
+                            <div class="">
+                                <button id="btn_memo" type="button" class="bg-black rounded font-normal text-white py-1 px-3 text-md">등록</button>
+                            </div>
+                        </div>
+
+                        <!-- 댓글 리스트 -->
+                        <div class="p-2 comment_wrap">
+                            <div class="border-b-2 border-gray-300 py-3 ">댓글 <span class="comment_count">0</span></div>
+                            <ul class="comment_list pt-4 space-y-2 max-h-[600px] overflow-y-auto text-gray-600 font-medium">
+
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+            </div><!--content-wrap end-->
+        </div><!--content-viewport end-->
+    </div><!--layout end-->
+</div><!--wrapper end-->
+
+<!-- ── DOMNodeInserted 등록 자체를 차단 ── -->
+<script>
+    (() => {
+        const _add = EventTarget.prototype.addEventListener;
+        EventTarget.prototype.addEventListener = function (type, listener, options) {
+            if (type === 'DOMNodeInserted') return;        // ← 즉시 무시
+            return _add.call(this, type, listener, options);
+        };
+    })();
+</script>
+<!-- 최신 Quill CDN -->
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+
+<script>
+    //담당자 선택
+    $(document).ready(function() {
+        $(".manager_id").select2({
+            placeholder: "담당자 선택",
+            width: '100%'
+        });
+
+        const $commentList = $("ul.comment_list");
+        if ($(".comment_list li").length == 0) {
+            $commentList.append('<li class="no_comment p-4 text-gray-500">댓글이 없습니다.</li>');
+        }
+    });
+
+</script>
+<script src="./Issue.js"></script>
+<script src="./file.js"></script>
+
+<script>
+
+    let quill;// 내용
+    let del_attach_idx = [];//첨부파일 삭제
+
+    // 내용 (html에디터)
+    const Image = Quill.import('formats/image');
+
+    class CustomImage extends Image {
+        static create(value) {
+            let node = super.create(value.src || value);
+            if (value.alt) node.setAttribute('alt', value.alt);
+            if (value['data-id']) node.setAttribute('data-id', value['data-id']);
+            return node;
+        }
+
+        static value(node) {
+            return {
+                src: node.getAttribute('src'),
+                alt: node.getAttribute('alt'),
+                'data-id': node.getAttribute('data-id')
+            };
+        }
+
+        static formats(node) {
+            return {
+                src: node.getAttribute('src'),
+                alt: node.getAttribute('alt'),
+                'data-id': node.getAttribute('data-id')
+            };
+        }
+    }
+
+    // 등록
+    CustomImage.blotName = 'image';
+    CustomImage.tagName = 'IMG';
+    Quill.register(CustomImage, true);
+
+    window.addEventListener("DOMContentLoaded", function () {
+        quill = new Quill('#editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline'],
+                    ['image'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                ]
+            }
+        });
+    });
+
+    //issue.setHost("<?=$host?>");
+    //issue.setToken("<?=$token?>");
+    const  issue = new Issue("<?=$host?>","<?=$token?>");
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const issue_idx = urlParams.get('issue_idx');
+
+    // issue.get(issue_idx); //상세보기
+    function render_detail(data)
+    {
+        //1. 상세 리스트
+        const issue = data.issue[0];
+
+        console.log(issue);
+
+        $(".issue_idx").text(issue.issue_idx);//코드
+        $("#issue_idx").val(issue.issue_idx);//코드
+
+        $("#title").val(issue.title);//제목
+
+        $("#editor").html(issue.content);//내용
+        if (quill) {// Quill 내용 삽입
+            quill.clipboard.dangerouslyPasteHTML(issue.content);
+        }
+
+        //진행상태
+        const status_div = `
+          <div id="${issue.status}" class="status_txt badge !px-6 !py-2.5 !text-[15px]">
+            ${issue.status_txt}
+          </div>
+        `;
+        $(".status").append(status_div);
+
+        switch (issue.status) {
+            case "U": //미할당
+                $(".status_txt").addClass("text-bg-light border-color-light");
+                break;
+            case "W" : //대기
+                $(".status_txt").addClass("text-bg-warning border-color-warning");
+                break;
+            case  "P" : //진행
+                $(".status_txt").addClass("text-bg-success border-color-success");
+                break;
+            case "C": //완료
+                $(".status_txt").addClass("text-bg-primary border-color-primary");
+                break;
+            case "H": //반려
+                $(".status_txt").addClass("text-bg-danger border-color-danger");
+                break;
+        }
+
+
+        $("#reg_emp_id").text(issue.reg_emp_id);//등록자
+
+        $("#reg_date").val(issue.reg_date);//등록일
+
+        $("#reg_datetime").val(issue.reg_datetime);//등록일시
+
+        //담당자
+        const manager = issue.manager || [];
+        const ids = manager.map(item => item.id);
+        manager.forEach(item => {
+            if (!$(`select.manager_id option[value="${item.id}"]`).length) {
+                $('select.manager_id').append(`<option value="${item.id}">${item.name}</option>`);
+            }
+        });
+        $('select.manager_id').val(ids).trigger('change');
+
+        //첨부파일 명
+        const file = issue.file || [];
+        file.forEach(data => {
+            const li_card = `
+               <li class='fileList bg-white border !border-[#c8d8ff] w-fit rounded-md px-3 py-1' data-id="${data.issue_file_idx}">
+                   <input type="hidden" name="attach_idx[]" value="${data.issue_file_idx}">
+
+                   <span class="fileName">
+                     ${data.orgin_file}
+                     <i class="del_file fa-regular fa-circle-xmark cursor-pointer p-1 transition"></i>
+                   </span>
+               </li>`;
+
+            $(".files_wrap").append(li_card);//첨부파일 리스트 추가
+        });
+
+
+        //2. 댓글
+        const replies = data.reply;
+
+        const li_card = replies.map(item => {
+            return `
+            <li class="space-y-1.5 p-3 bg-white rounded shadow-md">
+                <input type="hidden" id="issue_comment_idx" name="issue_comment_idx" value="${item.issue_comment_idx}" />
+                <input type="hidden" id="issue_idx" name="issue_idx" value="${item.issue_idx}" />
+
+                <div class="">
+                    <span class="reg_emp_id">${item.reg_emp_id}</span> |
+                    <span class="reg_date">${item.reg_date}</span>
+                </div>
+                <div class="content">${item.content}</div>
+            </li>`;
+        }).join('');
+
+        $(".comment_list").html(li_card);
+
+        // 댓글 개수 표시
+        $(".comment_wrap .comment_count").text(replies.length);
+    }
+
+    // 수정하기 버튼
+    $("#save_btn").on('click', function () {
+        const issue_idx = $("#issue_idx").val();
+        const title = $("#title").val();
+        const content = quill.root.innerHTML;
+        const status = $(".status_txt").attr("id");//진행상태
+
+        // 첨부파일코드
+        const attach_idx = $("input[name='attach_idx[]']").map(function () {
+            return $(this).val();
+        }).get();
+
+        // 담당자id
+        const manager_id = $("select[name='manager_id[]']").map(function () {
+            return $(this).val();
+        }).get();
+
+        issue.modify({
+            issue_idx,
+            title,
+            content,
+            status,
+            del_attach_idx,
+            attach_idx,
+            manager_id
+        }); //수정
+    });
+
+    // 첨부파일 삭제
+    $(document).on('click', '.del_file', function () {
+
+        const $li = $(this).closest('li.fileList');
+        const attachIdx = $li.data('id');
+        console.log("추가될 삭제 대상:", attachIdx); // ⭐ 반드시 찍어보세요
+        console.log("이전 del_attach_idx:", del_attach_idx);
+
+        // Quill 에디터 내 이미지 중 data-id 일치하는 것 제거
+        if (attachIdx !== undefined && quill) {
+            const imgs = quill.root.querySelectorAll('img');
+            imgs.forEach(img => {
+                if (img.getAttribute('data-id') == attachIdx) {
+                    img.remove();
+                }
+            });
+
+            del_attach_idx.push(attachIdx);
+        }
+
+        console.log("추가 후 del_attach_idx:", del_attach_idx);
+
+        $li.remove(); // 화면에서 제거
+    });
+
+    //댓글 추가
+    $("#btn_memo").on('click', function () {
+        const memo = $("#comment").val().trim();
+        const issue_idx = $("#issue_idx").val();
+
+        issue.add_reply(issue_idx,memo); //댓글추가
+        $("#comment").val("");//댓글칸 초기화
+
+    });
+
+
+    function make_memo(data) {
+        console.log("댓글추가", data);
+        const item = data[0];
+
+        const li_card = `
+            <li class="space-y-1.5 p-3 bg-white rounded shadow-md">
+                <input type="hidden" name="issue_comment_idx" value="${item.issue_comment_idx}" />
+                <input type="hidden" name="issue_idx" value="${item.issue_idx}" />
+
+                <div>
+                    <span class="reg_emp_id">${item.reg_emp_id}</span> |
+                    <span class="reg_date">${item.reg_date}</span>
+                </div>
+                <div class="content">${item.content}</div>
+            </li>`;
+
+        $(".comment_list").append(li_card); // 기존 댓글 아래에 누적
+
+        if ($(".comment_list .no_comment").length) {
+            $(".comment_list .no_comment").remove();
+        }
+
+        // 댓글 개수 추가
+        const $el = $(".comment_count");
+        $el.text(Number($el.text() || 0) + 1);
+
+    }
+
+
+
+    // 파일
+    function render_file(data)
+    {
+        console.log("파일추가", data);
+        const item = data;
+
+        const li_card = `
+            <li class='fileList bg-white border !border-[#c8d8ff] w-fit rounded-md px-3 py-1' data-id="${data.attach_idx}">
+                <input type="hidden" name="attach_idx[]" value="${data.attach_idx}">
+                <input type="hidden" name="file_name" id="file_name" value="${data.file_name}" /><!--저장된 파일명-->
+                <input type="hidden" name="file_path" id="file_path" value="${data.file_path}" /><!--파일 저장경로-->
+                <input type="hidden" name="full_path" id="full_path" value="${data.full_path}" /><!--파일저장 전체경로-->
+                <span class="fileName">
+                  ${data.file_name_original}
+                  <i class="del_file fa-regular fa-circle-xmark cursor-pointer p-1 transition"></i>
+                </span>
+                <span class='clear'>
+                  <input type='hidden' name='upfile_src' value='${data.src}'>
+                  <input type='hidden' name='upfile_name' value='${data.file_name}'>
+                </span>
+            </li>`;
+
+        $(".files_wrap").append(li_card);//첨부파일 리스트 추가
+
+        // 이미지 미리보기 삽입
+        const imgTag = `<img src="${data.src}" alt="${data.file_name_original}" data-id="${data.attach_idx}" class="abc"/>`;
+
+        if (typeof quill !== "undefined" && quill) {
+            quill.clipboard.dangerouslyPasteHTML(quill.getLength(), imgTag);
+        } else {
+//             $("#editor").append(imgTag); // Quill 없는 경우 대비
+        }
+
+    }
+</script>
+
+
+</body>
+</html>

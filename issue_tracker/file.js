@@ -80,7 +80,7 @@ function init() {
 
         const urlParams = new URLSearchParams(window.location.search);
         const issue_idx = urlParams.get('issue_idx');
-        issue.file_attach(issue_idx, fileList);
+        // issue.file_attach(issue_idx, fileList);
         console.log("fileList", fileList); // 드롭 직후
         console.log("idx", issue_idx); // 드롭 직후
 
