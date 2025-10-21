@@ -146,6 +146,17 @@
     includeHTML("#header_include", "./header.html");
 
     $(document).ready(function () {
+
+        /* 달력 선언 년도 - 월별*/
+        $(".apply_date_Y").datepicker({
+            format: "yyyy",          // 연도만 표시
+            minViewMode: 2,          // 'year' 모드로 제한 (0: day, 1: month, 2: year)
+            viewMode: "years",       // 뷰 모드를 연도 기준으로 시작
+            autoclose: true,
+            language: "kr",
+            orientation: "bottom auto"
+        });
+
         //테이블 리스트 생성
         const list_info = Array.from({length:12}, (_, i) => i + 1);//Array.from('ABC'); ['A', 'B', 'C'] // 리턴값:i + 1각 요소의 값으로 들어감
         //메인그룹리스트 생성

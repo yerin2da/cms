@@ -146,6 +146,16 @@
     includeHTML("#header_include", "./header.html");
 
 $(document).ready(function () {
+    /*달력 선언*/
+    $(".apply_date_Ym").datepicker({
+        format: "yyyy-mm", // 원하는 포맷 (년-월)
+        startView: 1,     // 월 뷰부터 시작
+        minViewMode: 1,   // 최소 뷰를 월로 제한
+        autoclose: true,   // 선택 후 자동 닫기
+        language: "kr",
+        orientation: "bottom auto" // 아래쪽으로 열리도록 설정
+    });
+
     //테이블 리스트 생성
         const list_info = Array.from({length:31}, (_, i) => i + 1);//Array.from('ABC'); ['A', 'B', 'C'] // 리턴값:i + 1각 요소의 값으로 들어감
         //메인그룹리스트 생성
