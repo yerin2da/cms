@@ -62,7 +62,7 @@
 }
 /*=========== 공통 버튼 =============*/
 .base-btn {
-  min-width: 60px;
+  min-width: 55px;
   width: fit-content;
   text-align: center;
   display: flex;
@@ -161,7 +161,7 @@
   font-weight:  600;
 }
 .base-btn.sm{
-  min-width: fit-content;
+  /*min-width: fit-content;*/
   height: var(--h-sm);
   font-size: var(--font-size-sm);
   padding: 0 10px;
@@ -214,8 +214,9 @@
   height: 100%;
   padding-top: 10px;
   background: #fff;
-  display: flex;
-  flex-flow: column;
+  /*display: flex;*/
+  display: grid;
+  /*flex-flow: column;*/
   gap: 10px;
   font-size: var(--font-size-md);
   flex: 1;
