@@ -44,8 +44,8 @@
                         <option value="등록일">등록일</option>
                     </select>
                     <!--달력-->
-                    <input type="text" id="VAL_ST_DATE" name="VAL_ST_DATE" value="2025-10" class="datepicker form-el calendar hasDatepicker" autocomplete="off">~
-                    <input type="text" id="VAL_ED_DATE" name="VAL_ED_DATE" value="2025-10" class="datepicker form-el calendar hasDatepicker" autocomplete="off">
+                    <input type="text" id="VAL_ST_DATE" name="VAL_ST_DATE" value="2025-10" class="form-el calendar apply_date_Ym" autocomplete="off">~
+                    <input type="text" id="VAL_ED_DATE" name="VAL_ED_DATE" value="2025-10" class="form-el calendar apply_date_Ym" autocomplete="off">
                     <select id="SCH_CAL_DATE" name="SCH_CAL_DATE" onchange="" class="form-el">
                         <option value="">::기간::</option>
                         <option value="당일">당일</option>
@@ -69,7 +69,7 @@
 
                 <!-- 검수명테이블, 회선 폼그룹-->
                 <div class="flex" style="gap: 10px; height: 206px;">
-                    <div id="inspection_name_table" class="table-wrap table-scrollable beige-theme" style=" width: 600px;">
+                    <div id="inspection_name_table" class="table-wrap table-scrollable beige-theme" style="width: 600px;">
                         <table class="common-table">
                             <colgroup>
                                 <col width="80px"><!-- 날짜 -->
@@ -83,7 +83,7 @@
                                     <th class="bg-blue-50" colspan="3">검수명  <span class="text-underline" id="un_selected" style="padding-left: 3px;font-weight: 500">전체해제</span> </th>
                                 </tr>
                             </thead>
-                            <tbody class="text-gray-700" id="inspection_name_tbody">
+                            <tbody id="inspection_name_tbody">
                                 <tr>
                                     <td>10-20</td>
                                     <td class="text-left">
@@ -92,7 +92,6 @@
                                             <span>251020K0</span>
                                         </label>
                                     </td>
-
                                     <td class="text-left">
                                         <label class="cursor-pointer">
                                             <input type="radio" name="inspection_name" value="251020K1">
@@ -112,7 +111,7 @@
                                     <td class="text-left"></td><td class="text-left"></td>
                                 </tr>
                                 <tr>
-                                    <td>08-29</td>
+                                    <td>10-09</td>
                                     <td class="text-left">
                                         <label class="cursor-pointer">
                                             <input type="radio" name="inspection_name" value="250829K0">
@@ -128,7 +127,7 @@
                                     <td class="text-left"></td>
                                 </tr>
                                 <tr>
-                                    <td>08-29</td>
+                                    <td>10-05</td>
                                     <td class="text-left">
                                         <label class="cursor-pointer">
                                             <input type="radio" name="inspection_name" value="250829K0">
@@ -144,7 +143,7 @@
                                     <td class="text-left"></td>
                                 </tr>
                                 <tr>
-                                    <td>08-29</td>
+                                    <td>10-02</td>
                                     <td class="text-left">
                                         <label class="cursor-pointer">
                                             <input type="radio" name="inspection_name" value="250829K0">
@@ -224,9 +223,7 @@
                                 <input type="number" name="INSPECT_ED_PERCENT[wrong_line]" class="form-el form-el-sm" placeholder="%">
                             </div>
                         </div>
-
                     </div><!--오른쪽 end-->
-
                 </div><!-- 검수명테이블, 회선 폼그룹 end-->
 
                 <div class="line"></div>
@@ -266,7 +263,7 @@
                             <th>
                                 <div class="th-wrap">
                                     <span style=" padding-right: 5px;">검수확인</span>
-                                    <button type="button" class="base-btn sm outline">적용</button>
+                                    <button type="button" id="inspect_complete" class="base-btn sm outline">적용</button>
                                 </div>
                             </th>
                             <th>
@@ -310,7 +307,7 @@
                     <tbody>
                         <tr>
                             <td><div class="td-wrap"><span>1</span></div></td><!-- 순번 -->
-                            <td><input type="checkbox" class="item_check" name="item_check[]" value=""></td><!--체크박스-->
+                            <td><input type="checkbox" class="item_check" name="item_check[]" value="1"></td><!--체크박스-->
                             <td><div class="td-wrap"><span>2025-10-20</span></div></td><!-- 등록일 -->
                             <td><div class="td-wrap"><span class="text-blue-700">완료</span></div></td><!--검수확인-->
                             <td>
@@ -352,9 +349,9 @@
                         </tr>
                         <tr>
                             <td><div class="td-wrap"><span>2</span></div></td><!-- 순번 -->
-                            <td><input type="checkbox" class="item_check" name="item_check[]" value=""></td><!--체크박스-->
+                            <td><input type="checkbox" class="item_check" name="item_check[]" value="2"></td><!--체크박스-->
                             <td><div class="td-wrap"><span>2025-10-20</span></div></td><!-- 등록일 -->
-                            <td><div class="td-wrap"><span>미확인</span></div></td><!--검수확인-->
+                            <td><div class="td-wrap"><span class="verifi_result">미확인</span></div></td><!--검수확인-->
                             <td>
                                 <div class="td-wrap td-wrap-col text-right statistics-normal">
                                     <p class="statistics-num">59,800</p> <!--정상회선 -->
@@ -394,9 +391,9 @@
                         </tr>
                         <tr>
                             <td><div class="td-wrap"><span>3</span></div></td><!-- 순번 -->
-                            <td><input type="checkbox" class="item_check" name="item_check[]" value=""></td><!--체크박스-->
+                            <td><input type="checkbox" class="item_check" name="item_check[]" value="3"></td><!--체크박스-->
                             <td><div class="td-wrap"><span>2025-10-20</span></div></td><!-- 등록일 -->
-                            <td><div class="td-wrap"><span>미확인</span></div></td><!--검수확인-->
+                            <td><div class="td-wrap"><span class="verifi_result">미확인</span></div></td><!--검수확인-->
                             <td>
                                 <div class="td-wrap td-wrap-col text-right statistics-normal">
                                     <p class="statistics-num">59,800</p> <!--정상회선 -->
@@ -436,9 +433,9 @@
                         </tr>
                         <tr>
                             <td><div class="td-wrap"><span>4</span></div></td><!-- 순번 -->
-                            <td><input type="checkbox" class="item_check" name="item_check[]" value=""></td><!--체크박스-->
+                            <td><input type="checkbox" class="item_check" name="item_check[]" value="4"></td><!--체크박스-->
                             <td><div class="td-wrap"><span>2025-10-20</span></div></td><!-- 등록일 -->
-                            <td><div class="td-wrap"><span>미확인</span></div></td><!--검수확인-->
+                            <td><div class="td-wrap"><span class="verifi_result">미확인</span></div></td><!--검수확인-->
                             <td>
                                 <div class="td-wrap td-wrap-col text-right statistics-normal">
                                     <p class="statistics-num">59,800</p> <!--정상회선 -->
@@ -478,9 +475,9 @@
                         </tr>
                         <tr>
                             <td><div class="td-wrap"><span>5</span></div></td><!-- 순번 -->
-                            <td><input type="checkbox" class="item_check" name="item_check[]" value=""></td><!--체크박스-->
+                            <td><input type="checkbox" class="item_check" name="item_check[]" value="5"></td><!--체크박스-->
                             <td><div class="td-wrap"><span>2025-10-20</span></div></td><!-- 등록일 -->
-                            <td><div class="td-wrap"><span>미확인</span></div></td><!--검수확인-->
+                            <td><div class="td-wrap"><span class="verifi_result">미확인</span></div></td><!--검수확인-->
                             <td>
                                 <div class="td-wrap td-wrap-col text-right statistics-normal">
                                     <p class="statistics-num">59,800</p> <!--정상회선 -->
@@ -520,9 +517,9 @@
                         </tr>
                         <tr>
                             <td><div class="td-wrap"><span>6</span></div></td><!-- 순번 -->
-                            <td><input type="checkbox" class="item_check" name="item_check[]" value=""></td><!--체크박스-->
+                            <td><input type="checkbox" class="item_check" name="item_check[]" value="6"></td><!--체크박스-->
                             <td><div class="td-wrap"><span>2025-10-20</span></div></td><!-- 등록일 -->
-                            <td><div class="td-wrap"><span>미확인</span></div></td><!--검수확인-->
+                            <td><div class="td-wrap"><span class="verifi_result">미확인</span></div></td><!--검수확인-->
                             <td>
                                 <div class="td-wrap td-wrap-col text-right statistics-normal">
                                     <p class="statistics-num">59,800</p> <!--정상회선 -->
@@ -562,9 +559,9 @@
                         </tr>
                         <tr>
                             <td><div class="td-wrap"><span>7</span></div></td><!-- 순번 -->
-                            <td><input type="checkbox" class="item_check" name="item_check[]" value=""></td><!--체크박스-->
+                            <td><input type="checkbox" class="item_check" name="item_check[]" value="7"></td><!--체크박스-->
                             <td><div class="td-wrap"><span>2025-10-20</span></div></td><!-- 등록일 -->
-                            <td><div class="td-wrap"><span>미확인</span></div></td><!--검수확인-->
+                            <td><div class="td-wrap"><span class="verifi_result">미확인</span></div></td><!--검수확인-->
                             <td>
                                 <div class="td-wrap td-wrap-col text-right statistics-normal">
                                     <p class="statistics-num">59,800</p> <!--정상회선 -->
@@ -604,9 +601,9 @@
                         </tr>
                         <tr>
                             <td><div class="td-wrap"><span>8</span></div></td><!-- 순번 -->
-                            <td><input type="checkbox" class="item_check" name="item_check[]" value=""></td><!--체크박스-->
+                            <td><input type="checkbox" class="item_check" name="item_check[]" value="8"></td><!--체크박스-->
                             <td><div class="td-wrap"><span>2025-10-20</span></div></td><!-- 등록일 -->
-                            <td><div class="td-wrap"><span>미확인</span></div></td><!--검수확인-->
+                            <td><div class="td-wrap"><span class="verifi_result">미확인</span></div></td><!--검수확인-->
                             <td>
                                 <div class="td-wrap td-wrap-col text-right statistics-normal">
                                     <p class="statistics-num">59,800</p> <!--정상회선 -->
@@ -662,79 +659,37 @@
 <script>
     includeHTML("#header_include", "./header.html");
 
-$(document).ready(function () {
-    /*달력 선언*/
-    $(".apply_date_Ym").datepicker({
-        format: "yyyy-mm", // 원하는 포맷 (년-월)
-        startView: 1,     // 월 뷰부터 시작
-        minViewMode: 1,   // 최소 뷰를 월로 제한
-        autoclose: true,   // 선택 후 자동 닫기
-        language: "kr",
-        orientation: "bottom auto" // 아래쪽으로 열리도록 설정
+    $(document).ready(function () {
+        /*달력 선언*/
+        $(".apply_date_Ym").datepicker({
+            format: "yyyy-mm", // 원하는 포맷 (년-월)
+            startView: 1,     // 월 뷰부터 시작
+            minViewMode: 1,   // 최소 뷰를 월로 제한
+            autoclose: true,   // 선택 후 자동 닫기
+            language: "kr",
+            orientation: "bottom auto" // 아래쪽으로 열리도록 설정
+        });
+
+        //전체 체크박스 선택
+        $(document).on("click",".all_check",function(){ //체크박스 전체선택
+            all_check();
+        });
+
+        // 개별 체크박스 클릭 시 올체크 상태 업데이트
+        $(document).on("click", ".item_check", function () {
+            item_check();
+        });
+
+        $(document).on("click", "#inspect_complete", function () { //적용버튼 클릭 - 검수확인처리
+            verifi_check();
+        });
+
+        $(document).on("click", "#un_selected", function () { //전체해제버튼 클릭
+            un_select();
+        });
+
     });
 
-    //테이블 리스트 생성
-        const list_info = Array.from({length:31}, (_, i) => i + 1);//Array.from('ABC'); ['A', 'B', 'C'] // 리턴값:i + 1각 요소의 값으로 들어감
-        //메인그룹리스트 생성
-        const list_table = $("#statistics-table tbody");
-        list_table.html(
-            list_info.map((_, idx) => {
-
-        return `
-            <tr>
-                <td><div class="td-wrap"><span>${idx + 1}</span></div></td><!-- 순번 -->
-                <td><div class="td-wrap"><span>2025-10-${String(idx + 1).padStart(2,'0')}</span></div></td><!-- 등록일 -->
-                <td>
-                    <div class="td-wrap td-wrap-col text-right statistics-good"><!-- 80~100%일 때 컬러 #FF4C4C-->
-                        <p class="statistics-num">100</p>
-                        <p>( 35% )</p>
-                    </div>
-                </td>
-                <td>
-                    <div class="td-wrap td-wrap-col text-right statistics-critical"><!--60~79%일 때 컬러 #f37232-->
-                        <p class="statistics-num">100</p>
-                        <p>( 60% )</p>
-                    </div>
-                </td>
-                <td>
-                    <div class="td-wrap td-wrap-col text-right statistics-danger"><!--40~59%일 때 컬러 #ffaa00-->
-                        <p class="statistics-num">100</p>
-                        <p>( 40% )</p>
-                    </div>
-                </td>
-                <td>
-                    <div class="td-wrap td-wrap-col text-right statistics-warning"><!--20~39%일 때 컬러 #d8ae5a-->
-                        <p class="statistics-num">100</p>
-                        <p>( 20% )</p>
-                    </div>
-                </td>
-                <td>
-                    <div class="td-wrap td-wrap-col text-right statistics-caution"><!--0~19%일 때 컬러 #9aa76c-->
-                        <p class="statistics-num">10</p>
-                        <p>( 1% )</p>
-                    </div>
-                </td>
-                <td>
-                    <div class="td-wrap td-wrap-col text-right statistics-safe"><!--0~19%일 때 컬러 #9aa76c-->
-                        <p class="statistics-num">100</p>
-                        <p>( 0% )</p>
-                    </div>
-                </td>
-            </tr>
-            `
-        }).join('')
-    );
-});
-
-    //전체 체크박스 선택
-    $(document).on("click",".all_check",function(){ //체크박스 전체선택
-        all_check();
-    });
-
-    // 개별 체크박스 클릭 시 올체크 상태 업데이트
-    $(document).on("click", ".item_check", function () {
-        item_check();
-    });
     function all_check()
     {
         if($('.all_check').is(":checked")){
@@ -755,8 +710,31 @@ $(document).ready(function () {
         }
     }
 
-</script>
+    function verifi_check()
+    {
+        let inspect_contract_idxs = [];
 
+        $(".item_check:checked").each(function() {
+            inspect_contract_idxs.push($(this).val());
+        });
+
+        const inspect_contract_idx = $(".item_check:checked").val(); //n개일때 처리..
+
+        console.log("회선 변경");
+        const $row  = $(`input[name="item_check[]"][value="${inspect_contract_idx}"]`).closest('tr');
+        //선택하여 수정한값 완료로 변경하기
+        $row.find(".verifi_result")
+            .text("완료")
+            .removeClass("verifi_result")
+            .addClass("text-blue-700");
+        alert("변경하였습니다.");
+
+    }
+
+    function un_select(){
+        $("input[name='inspection_name']:checked").prop("checked","");
+    }
+</script>
 
 </body>
 </html>
