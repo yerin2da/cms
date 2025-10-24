@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="ko" style=" overflow-y: hidden;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS</title>
+    <!-- JS/CSS -->
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
+    <link rel="stylesheet" type="text/css" href="./css/new_standard.css" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+
+    <!-- 폰트어썸 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!--달력-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker/dist/locales/bootstrap-datepicker.kr.min.js"></script>
+
+    <!-- 부트스트랩 CSS -->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" rel="stylesheet">-->
+</head>
+
+<body>
+<div class="wrapper inspect_line_management_wrap">
+    <div class="layout">
+        <div id="header_include"></div>
+        <form name="inspect_form" id="" method="GET">
+        <div class="content-viewport">
+            <div class="content-wrap">
+                <input type="hidden" name="sort_name" value="">
+                <input type="hidden" name="sort_desc" value="">
+
+                <!--서치필터-->
+                <div class="form-group form-group-row">
+                    <!--개수별보기-->
+                    <select id="PAGE_ROWS" name="PAGE_ROWS" class="form-el">
+                        <option value="">개수별 보기</option>
+                        <option value="30" selected="">30개 출력</option>
+                        <option value="50">50개 출력</option>
+                        <option value="100">100개 출력</option>
+                    </select>
+                    <select id="SCH_DATE" name="SCH_DATE" class="form-el" style="width:95px;">
+                        <option value="등록일">등록일</option>
+                    </select>
+                    <!--달력-->
+                    <input type="text" id="VAL_ST_DATE" name="VAL_ST_DATE" value="2025-10" class="datepicker form-el calendar hasDatepicker" autocomplete="off">~
+                    <input type="text" id="VAL_ED_DATE" name="VAL_ED_DATE" value="2025-10" class="datepicker form-el calendar hasDatepicker" autocomplete="off">
+                    <select id="SCH_CAL_DATE" name="SCH_CAL_DATE" onchange="" class="form-el">
+                        <option value="">::기간::</option>
+                        <option value="당일">당일</option>
+                        <option value="전일">전일</option>
+                        <option value="1주일">1주일</option>
+                        <option value="2주일">2주일</option>
+                    </select>
+
+                    <select id="SCH_KEY" name="SCH_KEY" class="form-el">
+                        <option value="company_nm">사업자명</option>
+                        <option value="biz_reg_nmbr">사업자번호</option>
+                        <option value="member_acnt">고객계정</option>
+                        <option value="bill_acnt">납부계정</option>
+                    </select>
+
+                    <input type="text" id="SCH_VAL" name="SCH_VAL" value="" class="form-el" autocomplete="off">
+
+                    <!--검색버튼-->
+                    <button type="button" id="search" class="base-btn outline md">검색</button>
+                </div><!--서치필터 end-->
+
+                <!-- 검수명테이블, 회선 폼그룹-->
+                <div class="flex" style="gap: 10px; height: 206px;">
+                    <div id="inspection_name_table" class="table-wrap table-scrollable beige-theme" style=" width: 600px;">
+                        <table class="common-table">
+                            <colgroup>
+                                <col width="80px"><!-- 날짜 -->
+                                <col width="170px"><!-- 검수명 -->
+                                <col width="170px"><!-- 검수명 -->
+                                <col width="170px"><!-- 검수명 -->
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th class="bg-blue-50">날짜</th>
+                                    <th class="bg-blue-50" colspan="3">검수명  <span class="text-underline" id="un_selected" style="padding-left: 3px;">전체해제</span> </th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-700" id="inspection_name_tbody">
+                                <tr>
+                                    <td>10-20</td>
+                                    <td class="text-left">
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="inspection_name" value="251020K0">
+                                            <span>251020K0</span>
+                                        </label>
+                                    </td>
+
+                                    <td class="text-left">
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="inspection_name" value="251020K1">
+                                            <span>251020K1</span>
+                                        </label>
+                                    </td>
+                                    <td class="text-left"></td>
+                                </tr>
+                                <tr>
+                                    <td>10-19</td>
+                                    <td class="text-left">
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="inspection_name" value="251019K0">
+                                            <span>251019K0</span>
+                                        </label>
+                                    </td>
+                                    <td class="text-left"></td><td class="text-left"></td>
+                                </tr>
+                                <tr>
+                                    <td>08-29</td>
+                                    <td class="text-left">
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="inspection_name" value="250829K0">
+                                            <span>250829K0</span>
+                                        </label>
+                                    </td>
+                                    <td class="text-left">
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="inspection_name" value="250829K1">
+                                            <span>250829K1</span>
+                                        </label>
+                                    </td>
+                                    <td class="text-left"></td>
+                                </tr>
+                                <tr>
+                                    <td>08-29</td>
+                                    <td class="text-left">
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="inspection_name" value="250829K0">
+                                            <span>250829K0</span>
+                                        </label>
+                                    </td>
+                                    <td class="text-left">
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="inspection_name" value="250829K1">
+                                            <span>250829K1</span>
+                                        </label>
+                                    </td>
+                                    <td class="text-left"></td>
+                                </tr>
+                                <tr>
+                                    <td>08-29</td>
+                                    <td class="text-left">
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="inspection_name" value="250829K0">
+                                            <span>250829K0</span>
+                                        </label>
+                                    </td>
+                                    <td class="text-left">
+                                        <label class="cursor-pointer">
+                                            <input type="radio" name="inspection_name" value="250829K1">
+                                            <span>250829K1</span>
+                                        </label>
+                                    </td>
+                                    <td class="text-left"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div><!--.table-wrap end-->
+
+                    <!--오른쪽-->
+                    <div class="" id="SCH_STATUS" >
+                        <!-- 정상 -->
+                        <div class="line_wrap">
+                            <label><input type="checkbox" name="SCH_STATUS[]" value="good_line"> 정상</label>
+                        </div>
+
+                        <!-- 비정상 -->
+                        <div class="line_wrap">
+                            <label><input type="checkbox" name="SCH_STATUS[]" value="wrong_line"> 비정상</label>
+                            <div class="form-group form-group-row">
+                                <input type="number" name="INSPECT_ST_LINE[wrong_line]" class="form-el form-el-sm" placeholder="회선">~
+                                <input type="number" name="INSPECT_ED_LINE[wrong_line]" class="form-el form-el-sm" placeholder="회선">
+                                <input type="number" name="INSPECT_ST_PERCENT[wrong_line]" class="form-el form-el-sm" placeholder="%">~
+                                <input type="number" name="INSPECT_ED_PERCENT[wrong_line]" class="form-el form-el-sm" placeholder="%">
+                            </div>
+                        </div>
+
+                        <!-- 검색없음 -->
+                        <div class="line_wrap">
+                            <label><input type="checkbox" name="SCH_STATUS[]" value="notfound"> 검색없음</label>
+                            <div class="form-group form-group-row">
+                                <input type="number" name="INSPECT_ST_LINE[wrong_line]" class="form-el form-el-sm" placeholder="회선">~
+                                <input type="number" name="INSPECT_ED_LINE[wrong_line]" class="form-el form-el-sm" placeholder="회선">
+                                <input type="number" name="INSPECT_ST_PERCENT[wrong_line]" class="form-el form-el-sm" placeholder="%">~
+                                <input type="number" name="INSPECT_ED_PERCENT[wrong_line]" class="form-el form-el-sm" placeholder="%">
+                            </div>
+                        </div>
+
+                        <!-- 번호틀림 -->
+                        <div class="line_wrap">
+                            <label><input type="checkbox" name="SCH_STATUS[]" value="number"> 번호틀림</label>
+                            <div class="form-group form-group-row">
+                                <input type="number" name="INSPECT_ST_LINE[wrong_line]" class="form-el form-el-sm" placeholder="회선">~
+                                <input type="number" name="INSPECT_ED_LINE[wrong_line]" class="form-el form-el-sm" placeholder="회선">
+                                <input type="number" name="INSPECT_ST_PERCENT[wrong_line]" class="form-el form-el-sm" placeholder="%">~
+                                <input type="number" name="INSPECT_ED_PERCENT[wrong_line]" class="form-el form-el-sm" placeholder="%">
+                            </div>
+                        </div>
+
+                        <!-- 상호틀림 -->
+                        <div class="line_wrap">
+                            <label><input type="checkbox" name="SCH_STATUS[]" value="name"> 상호틀림</label>
+                            <div class="form-group form-group-row">
+                                <input type="number" name="INSPECT_ST_LINE[wrong_line]" class="form-el form-el-sm" placeholder="회선">~
+                                <input type="number" name="INSPECT_ED_LINE[wrong_line]" class="form-el form-el-sm" placeholder="회선">
+                                <input type="number" name="INSPECT_ST_PERCENT[wrong_line]" class="form-el form-el-sm" placeholder="%">~
+                                <input type="number" name="INSPECT_ED_PERCENT[wrong_line]" class="form-el form-el-sm" placeholder="%">
+                            </div>
+                        </div>
+
+                        <!-- 다수검색 -->
+                        <div class="line_wrap">
+                            <label><input type="checkbox" name="SCH_STATUS[]" value="multi_search"> 다수검색 </label>
+                            <div class="form-group form-group-row">
+                                <input type="number" name="INSPECT_ST_LINE[wrong_line]" class="form-el form-el-sm" placeholder="회선">~
+                                <input type="number" name="INSPECT_ED_LINE[wrong_line]" class="form-el form-el-sm" placeholder="회선">
+                                <input type="number" name="INSPECT_ST_PERCENT[wrong_line]" class="form-el form-el-sm" placeholder="%">~
+                                <input type="number" name="INSPECT_ED_PERCENT[wrong_line]" class="form-el form-el-sm" placeholder="%">
+                            </div>
+                        </div>
+
+                    </div><!--오른쪽 end-->
+
+                </div><!-- 검수명테이블, 회선 폼그룹 end-->
+
+                <div class="line"></div>
+
+                <div class="table-wrap beige-theme table-scrollable">
+                <table class="common-table statistics-table">
+                    <colgroup>
+                        <col width="80px;">	<!-- 순번 -->
+                        <col width="40px;">	<!-- 체크박스 -->
+                        <col width="120px"><!-- 등록일 -->
+                        <col width="80px;">	<!-- 검수확인 -->
+                        <col width="120px"><!-- 정상회선 -->
+                        <col width="120px"><!-- 비정상회선 -->
+                        <col width="120px"><!-- 비노출 -->
+                        <col width="120px"><!-- 번호틀림 -->
+                        <col width="120px"><!-- 상호틀림 -->
+                        <col width="120px"><!-- 다수검색 -->
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="th-wrap">
+                                    <span>순번</span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th-wrap">
+                                    <input type="checkbox" id="all_check" class="all_check">
+                                </div>
+                            </th>
+
+                            <th>
+                                <div class="th-wrap">
+                                    <span>등록일</span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th-wrap">
+                                    <span style=" padding-right: 5px;">검수확인</span>
+                                    <button type="button" class="base-btn sm outline">적용</button>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th-wrap">
+                                    <span>정상회선</span>
+                                    <span class="sort-icon" data-name="good_line"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th-wrap">
+                                    <span>비정상회선</span>
+                                    <span class="sort-icon" data-name="wrong_line"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th-wrap">
+                                    <span>검색없음</span>
+                                    <span class="sort-icon" data-name="notfound"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th-wrap">
+                                    <span>번호틀림</span>
+                                    <span class="sort-icon" data-name="number_wrong"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th-wrap">
+                                    <span>상호틀림</span>
+                                    <span class="sort-icon" data-name="campany_name_wrong"></span>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th-wrap">
+                                    <span>다수검색</span>
+                                    <span class="sort-icon" data-name="muulti_search"></span>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><div class="td-wrap"><span>1</span></div></td><!-- 순번 -->
+                            <td><input type="checkbox" class="item_check" name="item_check[]" value=""></td><!--체크박스-->
+                            <td><div class="td-wrap"><span>2025-10-20</span></div></td><!-- 등록일 -->
+                            <td><div class="td-wrap"><span class="text-blue-700">완료</span></div></td><!--검수확인-->
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-normal">
+                                    <p class="statistics-num">59,800</p> <!--정상회선 -->
+                                    <p>( 85.08% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-safe">
+                                    <p class="statistics-num">8,922</p> <!--비정상회선 -->
+                                    <p>( 14.92% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-warning">
+                                    <p class="statistics-num">3,853</p> <!--검색없음 -->
+                                    <p>( 43.19% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-caution">
+                                    <p class="statistics-num">2,915</p> <!--번호틀림 -->
+                                    <p>( 32.67% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-caution">
+                                    <p class="statistics-num">2,154</p> <!--상호틀림 -->
+                                    <p>( 24.14% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-safe">
+                                    <p class="statistics-num">175</p> <!--다수검색 -->
+                                    <p>( 0.29% )</p>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><div class="td-wrap"><span>2</span></div></td><!-- 순번 -->
+                            <td><input type="checkbox" class="item_check" name="item_check[]" value=""></td><!--체크박스-->
+                            <td><div class="td-wrap"><span>2025-10-20</span></div></td><!-- 등록일 -->
+                            <td><div class="td-wrap"><span>미확인</span></div></td><!--검수확인-->
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-normal">
+                                    <p class="statistics-num">59,800</p> <!--정상회선 -->
+                                    <p>( 85.08% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-safe">
+                                    <p class="statistics-num">8,922</p> <!--비정상회선 -->
+                                    <p>( 14.92% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-warning">
+                                    <p class="statistics-num">3,853</p> <!--검색없음 -->
+                                    <p>( 43.19% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-caution">
+                                    <p class="statistics-num">2,915</p> <!--번호틀림 -->
+                                    <p>( 32.67% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-caution">
+                                    <p class="statistics-num">2,154</p> <!--상호틀림 -->
+                                    <p>( 24.14% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-safe">
+                                    <p class="statistics-num">175</p> <!--다수검색 -->
+                                    <p>( 0.29% )</p>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><div class="td-wrap"><span>3</span></div></td><!-- 순번 -->
+                            <td><input type="checkbox" class="item_check" name="item_check[]" value=""></td><!--체크박스-->
+                            <td><div class="td-wrap"><span>2025-10-20</span></div></td><!-- 등록일 -->
+                            <td><div class="td-wrap"><span>미확인</span></div></td><!--검수확인-->
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-normal">
+                                    <p class="statistics-num">59,800</p> <!--정상회선 -->
+                                    <p>( 85.08% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-safe">
+                                    <p class="statistics-num">8,922</p> <!--비정상회선 -->
+                                    <p>( 14.92% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-warning">
+                                    <p class="statistics-num">3,853</p> <!--검색없음 -->
+                                    <p>( 43.19% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-caution">
+                                    <p class="statistics-num">2,915</p> <!--번호틀림 -->
+                                    <p>( 32.67% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-caution">
+                                    <p class="statistics-num">2,154</p> <!--상호틀림 -->
+                                    <p>( 24.14% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-safe">
+                                    <p class="statistics-num">175</p> <!--다수검색 -->
+                                    <p>( 0.29% )</p>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><div class="td-wrap"><span>4</span></div></td><!-- 순번 -->
+                            <td><input type="checkbox" class="item_check" name="item_check[]" value=""></td><!--체크박스-->
+                            <td><div class="td-wrap"><span>2025-10-20</span></div></td><!-- 등록일 -->
+                            <td><div class="td-wrap"><span>미확인</span></div></td><!--검수확인-->
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-normal">
+                                    <p class="statistics-num">59,800</p> <!--정상회선 -->
+                                    <p>( 85.08% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-safe">
+                                    <p class="statistics-num">8,922</p> <!--비정상회선 -->
+                                    <p>( 14.92% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-warning">
+                                    <p class="statistics-num">3,853</p> <!--검색없음 -->
+                                    <p>( 43.19% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-caution">
+                                    <p class="statistics-num">2,915</p> <!--번호틀림 -->
+                                    <p>( 32.67% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-caution">
+                                    <p class="statistics-num">2,154</p> <!--상호틀림 -->
+                                    <p>( 24.14% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-safe">
+                                    <p class="statistics-num">175</p> <!--다수검색 -->
+                                    <p>( 0.29% )</p>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><div class="td-wrap"><span>5</span></div></td><!-- 순번 -->
+                            <td><input type="checkbox" class="item_check" name="item_check[]" value=""></td><!--체크박스-->
+                            <td><div class="td-wrap"><span>2025-10-20</span></div></td><!-- 등록일 -->
+                            <td><div class="td-wrap"><span>미확인</span></div></td><!--검수확인-->
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-normal">
+                                    <p class="statistics-num">59,800</p> <!--정상회선 -->
+                                    <p>( 85.08% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-safe">
+                                    <p class="statistics-num">8,922</p> <!--비정상회선 -->
+                                    <p>( 14.92% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-warning">
+                                    <p class="statistics-num">3,853</p> <!--검색없음 -->
+                                    <p>( 43.19% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-caution">
+                                    <p class="statistics-num">2,915</p> <!--번호틀림 -->
+                                    <p>( 32.67% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-caution">
+                                    <p class="statistics-num">2,154</p> <!--상호틀림 -->
+                                    <p>( 24.14% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-safe">
+                                    <p class="statistics-num">175</p> <!--다수검색 -->
+                                    <p>( 0.29% )</p>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><div class="td-wrap"><span>6</span></div></td><!-- 순번 -->
+                            <td><input type="checkbox" class="item_check" name="item_check[]" value=""></td><!--체크박스-->
+                            <td><div class="td-wrap"><span>2025-10-20</span></div></td><!-- 등록일 -->
+                            <td><div class="td-wrap"><span>미확인</span></div></td><!--검수확인-->
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-normal">
+                                    <p class="statistics-num">59,800</p> <!--정상회선 -->
+                                    <p>( 85.08% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-safe">
+                                    <p class="statistics-num">8,922</p> <!--비정상회선 -->
+                                    <p>( 14.92% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-warning">
+                                    <p class="statistics-num">3,853</p> <!--검색없음 -->
+                                    <p>( 43.19% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-caution">
+                                    <p class="statistics-num">2,915</p> <!--번호틀림 -->
+                                    <p>( 32.67% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-caution">
+                                    <p class="statistics-num">2,154</p> <!--상호틀림 -->
+                                    <p>( 24.14% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-safe">
+                                    <p class="statistics-num">175</p> <!--다수검색 -->
+                                    <p>( 0.29% )</p>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><div class="td-wrap"><span>7</span></div></td><!-- 순번 -->
+                            <td><input type="checkbox" class="item_check" name="item_check[]" value=""></td><!--체크박스-->
+                            <td><div class="td-wrap"><span>2025-10-20</span></div></td><!-- 등록일 -->
+                            <td><div class="td-wrap"><span>미확인</span></div></td><!--검수확인-->
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-normal">
+                                    <p class="statistics-num">59,800</p> <!--정상회선 -->
+                                    <p>( 85.08% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-safe">
+                                    <p class="statistics-num">8,922</p> <!--비정상회선 -->
+                                    <p>( 14.92% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-warning">
+                                    <p class="statistics-num">3,853</p> <!--검색없음 -->
+                                    <p>( 43.19% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-caution">
+                                    <p class="statistics-num">2,915</p> <!--번호틀림 -->
+                                    <p>( 32.67% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-caution">
+                                    <p class="statistics-num">2,154</p> <!--상호틀림 -->
+                                    <p>( 24.14% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-safe">
+                                    <p class="statistics-num">175</p> <!--다수검색 -->
+                                    <p>( 0.29% )</p>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><div class="td-wrap"><span>8</span></div></td><!-- 순번 -->
+                            <td><input type="checkbox" class="item_check" name="item_check[]" value=""></td><!--체크박스-->
+                            <td><div class="td-wrap"><span>2025-10-20</span></div></td><!-- 등록일 -->
+                            <td><div class="td-wrap"><span>미확인</span></div></td><!--검수확인-->
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-normal">
+                                    <p class="statistics-num">59,800</p> <!--정상회선 -->
+                                    <p>( 85.08% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-safe">
+                                    <p class="statistics-num">8,922</p> <!--비정상회선 -->
+                                    <p>( 14.92% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-warning">
+                                    <p class="statistics-num">3,853</p> <!--검색없음 -->
+                                    <p>( 43.19% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-caution">
+                                    <p class="statistics-num">2,915</p> <!--번호틀림 -->
+                                    <p>( 32.67% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-caution">
+                                    <p class="statistics-num">2,154</p> <!--상호틀림 -->
+                                    <p>( 24.14% )</p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="td-wrap td-wrap-col text-right statistics-safe">
+                                    <p class="statistics-num">175</p> <!--다수검색 -->
+                                    <p>( 0.29% )</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div><!-- table-wrap end -->
+                <div id="paginationContainer" class="paging_wrap"><div class="pagination"><ul class="paging xi-ul"><li class="xi-li"><a class="active" href="javascript:goPage(1)">1</a></li><li class="xi-li"><a href="javascript:goPage(2)">2</a></li><li class="xi-li"><a href="javascript:goPage(3)">3</a></li><li class="xi-li"><a href="javascript:goPage(4)">4</a></li><li class="xi-li"><a href="javascript:goPage(5)">5</a></li><li class="xi-li"><a href="javascript:goPage(6)">6</a></li><li class="xi-li"><a href="javascript:goPage(7)">7</a></li><li class="xi-li"><a href="javascript:goPage(8)">8</a></li><li class="xi-li"><a href="javascript:goPage(9)">9</a></li><li class="xi-li"><a href="javascript:goPage(10)">10</a></li><li class="xi-li"><a href="javascript:goPage(11)"><i class="xi-angle-right"></i></a></li><li class="xi-li"><a href="javascript:goPage(11)"><i class="xi-angle-double-right"></i></a></li></ul></div></div>
+
+                <!-- paging_wrap -->
+                <input type="hidden" id="CURR_PAGE" name="CURR_PAGE" value="1">
+
+            </div><!--content-wrap end-->
+        </div><!--content-viewport end-->
+        </form><!--inspect_form end-->
+    </div><!--layout end-->
+</div><!--wrapper end-->
+
+<script src="include.js"></script>
+<script>
+    includeHTML("#header_include", "./header.html");
+
+$(document).ready(function () {
+    /*달력 선언*/
+    $(".apply_date_Ym").datepicker({
+        format: "yyyy-mm", // 원하는 포맷 (년-월)
+        startView: 1,     // 월 뷰부터 시작
+        minViewMode: 1,   // 최소 뷰를 월로 제한
+        autoclose: true,   // 선택 후 자동 닫기
+        language: "kr",
+        orientation: "bottom auto" // 아래쪽으로 열리도록 설정
+    });
+
+    //테이블 리스트 생성
+        const list_info = Array.from({length:31}, (_, i) => i + 1);//Array.from('ABC'); ['A', 'B', 'C'] // 리턴값:i + 1각 요소의 값으로 들어감
+        //메인그룹리스트 생성
+        const list_table = $("#statistics-table tbody");
+        list_table.html(
+            list_info.map((_, idx) => {
+
+        return `
+            <tr>
+                <td><div class="td-wrap"><span>${idx + 1}</span></div></td><!-- 순번 -->
+                <td><div class="td-wrap"><span>2025-10-${String(idx + 1).padStart(2,'0')}</span></div></td><!-- 등록일 -->
+                <td>
+                    <div class="td-wrap td-wrap-col text-right statistics-good"><!-- 80~100%일 때 컬러 #FF4C4C-->
+                        <p class="statistics-num">100</p>
+                        <p>( 35% )</p>
+                    </div>
+                </td>
+                <td>
+                    <div class="td-wrap td-wrap-col text-right statistics-critical"><!--60~79%일 때 컬러 #f37232-->
+                        <p class="statistics-num">100</p>
+                        <p>( 60% )</p>
+                    </div>
+                </td>
+                <td>
+                    <div class="td-wrap td-wrap-col text-right statistics-danger"><!--40~59%일 때 컬러 #ffaa00-->
+                        <p class="statistics-num">100</p>
+                        <p>( 40% )</p>
+                    </div>
+                </td>
+                <td>
+                    <div class="td-wrap td-wrap-col text-right statistics-warning"><!--20~39%일 때 컬러 #d8ae5a-->
+                        <p class="statistics-num">100</p>
+                        <p>( 20% )</p>
+                    </div>
+                </td>
+                <td>
+                    <div class="td-wrap td-wrap-col text-right statistics-caution"><!--0~19%일 때 컬러 #9aa76c-->
+                        <p class="statistics-num">10</p>
+                        <p>( 1% )</p>
+                    </div>
+                </td>
+                <td>
+                    <div class="td-wrap td-wrap-col text-right statistics-safe"><!--0~19%일 때 컬러 #9aa76c-->
+                        <p class="statistics-num">100</p>
+                        <p>( 0% )</p>
+                    </div>
+                </td>
+            </tr>
+            `
+        }).join('')
+    );
+});
+
+    //전체 체크박스 선택
+    $(document).on("click",".all_check",function(){ //체크박스 전체선택
+        all_check();
+    });
+
+    // 개별 체크박스 클릭 시 올체크 상태 업데이트
+    $(document).on("click", ".item_check", function () {
+        item_check();
+    });
+    function all_check()
+    {
+        if($('.all_check').is(":checked")){
+            $('.item_check').prop('checked', true);
+        }else{
+            $('.item_check').prop('checked', false);
+        }
+    }
+    function item_check()
+    {
+        const total = $('.item_check').length; // 개별 체크박스 총 개수
+        let checked = $('.item_check:checked').length; // 체크된 체크박스 개수 업데이트
+
+        if (total === checked) {
+            $(".all_check").prop('checked', true); // 모두 체크되면 올체크 활성화
+        } else {
+            $(".all_check").prop('checked', false); // 하나라도 체크 해제되면 올체크 비활성화
+        }
+    }
+
+</script>
+
+
+</body>
+</html>

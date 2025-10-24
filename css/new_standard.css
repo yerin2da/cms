@@ -214,9 +214,8 @@
   height: 100%;
   padding-top: 10px;
   background: #fff;
-  /*display: flex;*/
-  display: grid;
-  /*flex-flow: column;*/
+  display: flex;
+  flex-flow: column;
   gap: 10px;
   font-size: var(--font-size-md);
   flex: 1;
@@ -332,6 +331,7 @@ select.form-el{/*셀렉트 화살표 이미지*/
 }
 .form-el-sm{
   height: var(--h-sm);
+  font-size: 13px;
 }
 .form-el:hover {
   border-color: #90C2FF;
@@ -569,7 +569,7 @@ select.form-el option{
 }
 
 /*==========체크박스, 라디오버튼==========*/
-.wrapper .item_check{
+.wrapper input[type="checkbox"]{
   margin: 0 !important;
   accent-color: var(--main-blue)!important;
 }
@@ -801,13 +801,60 @@ label{
   height: 60px;
 }
 /*퍼센트 구간별 색상*/
-.statistics-good{color: #008307;}/*80~100%일 때*/
+.statistics-normal{color: #008307;}/*80~100%일 때*/
 .statistics-critical{color: #FF4C4C;}/*80~100%일 때*/
 .statistics-danger{color: #f37232;}/*60~79%일 때*/
 .statistics-warning{color: #ffaa00;}/*40~59%일 때*/
 .statistics-caution{color: #d8ae5a;}/*20~39%일 때*/
 .statistics-safe{color: #9ca3af;}/*0~19%일 때*/
 
+
+/*검수회선관리*/
+label{
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.calendar{
+  width: 100px;
+}
+#SCH_STATUS{
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  border: 1px solid var(--bd-gray);
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 13px;
+  height: 100%;
+}
+.line_wrap{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.line_wrap input{
+  text-align: right;
+}
+.line_wrap .form-group{
+  width: 500px;
+}
+/*<input type="number">의 기본 스피너(위아래 화살표) 제거*/
+input[type="number"]::-webkit-inner-spin-button,/* Chrome, Safari, Edge, Opera */
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {/* Firefox */
+  -moz-appearance: textfield;
+}
+.text-blue-500   { color: #3b82f6!important; }
+.text-blue-600   { color: #2563eb!important; }
+.text-blue-700   { color: #1d4ed8!important; }
 @media (min-width: 1950px) {
   #check-range-popup .popup-content{/* 선택범위설정 팝업 위치*/
     left: 5.5%;
